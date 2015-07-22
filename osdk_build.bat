@@ -7,6 +7,7 @@
 IF "%OSDK%"=="" GOTO ErCfg
 
 :: Goto Basic
+Goto Dialog
 
 ::
 :: Set the build parameters : Laby
@@ -24,12 +25,16 @@ CALL osdk_config_camp.bat
 CALL %OSDK%\bin\make.bat %OSDKFILE%
 %OSDK%\bin\MemMap.exe build\symbols build\map_camp.htm %OSDKNAME% %OSDK%\documentation\documentation.css
 
+:Dialog
+
 ::
 :: Same for Dialog
 ::
 CALL osdk_config_dialog.bat
 CALL %OSDK%\bin\make.bat %OSDKFILE%
 %OSDK%\bin\MemMap.exe build\symbols build\map_dialog.htm %OSDKNAME% %OSDK%\documentation\documentation.css
+
+Goto Tap2dsk
 
 ::
 :: Same for CopyZeroPage
@@ -123,6 +128,8 @@ echo "TPRIX.tap"
 
 echo "monstres.tap"
 %OSDK%\bin\bas2tap -b2t1 monstres.bas BUILD\monstres.tap
+
+:Tap2dsk
 
 pause
 

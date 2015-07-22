@@ -47,7 +47,7 @@ void loadTextesPersos()
 	char *ptr;
 	memset(filename, 0, 16);
 	if (ca != 51) {
-		sprintf(filename, "TXPERS%d.BIN", ville);
+		sprintf(filename, "TXPERS9.BIN", ville);
 		ret = DiscLoad(filename);    
 	} else {
 		ret = DiscLoad("TXPERS10.BIN");
@@ -80,19 +80,22 @@ void loadNomsImagesPersos()
     if (ret==0) {
 		ptr = (char*)0xa000;
 		vmax = *ptr; ptr++;
-		printf("Nb Villes : %d\n", vmax);
+		//printf("Nb Villes : %d\n", vmax);
 		for(v=0;v<vmax;v++) {
 			ptr=loadTexts(ptr, imagesPersos[v]);
 		}
-		//#ifdef debug
+		#ifdef debug
 		printf("Fin des textes, on utilise %d caracteres sur %d\n", 
 			(ptTextes-textes), TMAX);
 		puts("taper sur une touche pour continuer\n");
         a = (char)getchar();
-        //#endif
+        #endif
 	}
 }
 
+#define NEW_VERSION 1
+
+#ifdef NEW_VERSION
 void dialogue(char d)
 {
 	unsigned char i, j, k, x, xinit, y, t, lg;
@@ -104,21 +107,23 @@ void dialogue(char d)
 	// bande en haut et en bas
 	do {
 		if (coteTexte==0) {
-			xinit=x=136;
-			deltaCote = 18;
-			maxCote = 236;
+			xinit=x=138;
+			deltaCote = 20;
+			maxCote = 239;
 		} else {
 			xinit=x=12;
 			deltaCote = 0;
-			maxCote = 120;
+			maxCote = 108;
 		}
-		p = (unsigned char*)(0xa000+20*x);
-		q = (unsigned char*)(0xbf18-30*x);
+		/*
+		p = (unsigned char*)(0xa000+20);
+		q = (unsigned char*)(0xbf18-30);
 		for(j=0;j<10;j++) {
 			memset(p+deltaCote,64,20);
 			memset(q+deltaCote,64,20);
 		}
-		for(i=0;i<15;i++) {
+		*/
+		for(i=0;i<17;i++) {
 			curset(x,20,3);
 			hchar('=',0,1);
 			curset(x,170,3);
@@ -140,10 +145,9 @@ void dialogue(char d)
 					y+=10;				
 					if (y>160) {
 						if(k==0) {
-							puts("Appuyez sur une touche pour continuer\n");
+							puts("Appuyez sur une touche pour continuer");
 							c=get();
 							if(c=='f'||c=='F') return;
-							puts("\n\n");
 						}
 						k=(k+1)%13;
 						// scroll text
@@ -179,10 +183,10 @@ void dialogue(char d)
 ^ - ô
 
 		*/
-		puts("Dois-je r{p{ter (O/N)?\n");
+		puts("Dois-je r{p{ter (O/N)?");
 		c = get();
 		// scrolling d'effacement
-		x=xinit;
+		x=20;
 		p = (unsigned char*)(0xa000+40*x);
 		q = (unsigned char*)(0xbf18-40*x);
 		while(p+800<q) {
@@ -204,10 +208,128 @@ void dialogue(char d)
 		}
 
 	} while(c=='o'||c=='O');	
-	puts("Appuyez sur une touche pour continuer\n");
+	puts("Appuyez sur une touche pour continuer");
+	get();
+
+}
+#else
+void dialogue()
+{
+	unsigned char i, j, k, x, xinit, y, t, lg;
+	unsigned char *p, *q;
+	char c;
+	int deltaCote = 0;
+	int maxCote = 103;
+
+	// bande en haut et en bas
+	do {
+		if (coteTexte==0) {
+			xinit=x=138;
+			deltaCote = 20;
+			maxCote = 239;
+		} else {
+			xinit=x=12;
+			deltaCote = 0;
+			maxCote = 108;
+		}
+		/*
+		p = (unsigned char*)(0xa000+20);
+		q = (unsigned char*)(0xbf18-30);
+		for(j=0;j<10;j++) {
+			memset(p+deltaCote,64,20);
+			memset(q+deltaCote,64,20);
+		}
+		*/
+		for(i=0;i<17;i++) {
+			curset(x,20,3);
+			hchar('=',0,1);
+			curset(x,170,3);
+			hchar('=',0,1);
+			x+=6;
+		}
+		x=xinit;
+		y=30;
+		k=0;
+		for(t=0;t<15;t++) {
+			lg = strlen(textesPersos[0][t]);
+			for(i=0;i<lg;i++) {
+				curset(x,y,3);
+				hchar(textesPersos[0][t][i],0,1);
+				// printf("%c",textesPersos[1][t][i]);
+				x+=6;
+				if(x>maxCote) {
+					x=xinit;
+					y+=10;				
+					if (y>160) {
+						if(k==0) {
+							puts("Appuyez sur une touche pour continuer");
+							c=get();
+							if(c=='f'||c=='F') return;
+						}
+						k=(k+1)%13;
+						// scroll text
+						// adresses des deux premières lignes
+						p = (unsigned char*)(0xa000+40*30);
+						q = p+400;
+						// tant que q n'a pas dépassé la fin de la zone d'affichage
+						while(q<(unsigned char*)(0xbf18 - 40*30+2)) {
+							// on recopie les 20 octets de la ligne qui 
+							// commence à q dans celle qui commence à p
+							memcpy(p+deltaCote,q+deltaCote,20);
+							// on passe aux deux lignes suivantes
+							p += 40;
+							q += 40;
+						}
+						y = 160;
+						p = (unsigned char*)(0xbf18 - 40*40+2);
+						for(j=0;j<10;j++) {
+							memset(p+deltaCote,64,18);
+							p += 40;
+						}
+						wait(1);
+					}
+				}
+			}
+		}
+		/*
+é - {
+ù - |
+è - }
+ê - ~
+à - @
+^ - ô
+
+		*/
+		puts("Dois-je r{p{ter (O/N)?");
+		c = get();
+		// scrolling d'effacement
+		x=20;
+		p = (unsigned char*)(0xa000+40*x);
+		q = (unsigned char*)(0xbf18-40*x);
+		while(p+800<q) {
+			memcpy(p+deltaCote+400,p+deltaCote,20);
+			memcpy(q+deltaCote-400,q+deltaCote,20);
+			memset(p+deltaCote+2,64,18);
+			memset(q+deltaCote+2,64,18);
+			p += 40;
+			q -= 40;
+			wait(1);
+		}
+		if(c=='o'||c=='O') {
+			while(p<q) {
+				memset(p+deltaCote+2,64,18);
+				memset(q+deltaCote+2,64,18);
+				p += 40;
+				q -= 40;
+			}
+		}
+
+	} while(c=='o'||c=='O');	
+	puts("Appuyez sur une touche pour continuer");
 	get();
 }
 
+#endif
 /*
 void loadRoutines()
 {
@@ -239,6 +361,7 @@ void loadImage(char *image)
 		return;
 	}
 	coteTexte = peek(0x7fff);
+	
 	if (coteTexte==0) {
 		ink(peek(0x7ffd));
    		ac=0xa002;       
@@ -286,7 +409,7 @@ void loadImage(char *image)
 	}
 }
 
-
+#ifdef NEW_VERSION
 void main()
 {		
 		char j;
@@ -296,15 +419,15 @@ void main()
         loadCharacters();
         loadTextesPersos();
         loadNomsImagesPersos();
-        // DiscLoad("FONT.BIN");
-		get();
+        DiscLoad("FONT.BIN");
+		//get();
 		hires();
 		//loadRoutines();
 		if (ca == 7 || ca == 8) {
-			printf("v: %d ca: %d, ca-7: %d\n", ville, ca, (ca-7));
-			get();
-			puts(imagesPersos[ville-1][ca-7]);
-			get();
+			//printf("v: %d ca: %d, ca-7: %d\n", ville, ca, (ca-7));
+			//get();
+			//puts(imagesPersos[ville-1][ca-7]);
+			//get();
 			loadImage(imagesPersos[ville-1][ca-7]);
 			if(ville==2 && ca == 8)
 				printf("Je suis la sorci}re\n");
@@ -330,6 +453,84 @@ void main()
 		io_needed = 1;
 		saveCharacters();
 		restorePageZero();
+		SwitchToCommand("LABY");
+		//SwitchToCommand("!DIR");
+}
+#else
+void main()
+{		
+		char j;
+		unsigned int *seed;
+		backupPageZero();
+		io_needed=1;
+        loadCharacters();
+        loadTextesPersos();
+        loadNomsImagesPersos();
+        DiscLoad("FONT.BIN");
+
+		hires();
+		//loadRoutines();
+		loadImage("PORTR01.DAT"); // margery
+		dialogue();
+		hires();
+		loadImage("PORTR02.DAT"); // tyrion
+		dialogue();
+		hires();
+		loadImage("PORTR03.DAT"); // jaime
+		dialogue();
+		hires();
+		loadImage("PORTR04.DAT"); // jon
+		dialogue();
+		hires();
+		loadImage("PORTR05.DAT"); // robert
+		dialogue();
+		hires();
+		loadImage("PORTR06.DAT"); // luwin
+		dialogue();
+		hires();
+		loadImage("PORTR07.DAT"); // LF
+		dialogue();
+		hires();
+		loadImage("PORTR08.DAT"); // Tywin
+		dialogue();
+		hires();
+		loadImage("PORTR09.DAT"); // Ned
+		dialogue();
+		hires();
+		loadImage("PORTR10.DAT"); // Sansa
+		dialogue();
+		hires();
+		loadImage("PORTR11.DAT"); // Sorciere
+		dialogue();
+		hires();
+		loadImage("PORTR12.DAT"); // Theon
+		dialogue();
+		hires();
+		loadImage("PORTR13.DAT"); // Asha
+		dialogue();
+		hires();
+		loadImage("PORTR14.DAT"); // Loras
+		dialogue();
+		hires();
+		loadImage("PORTR15.DAT"); // Blackfish
+		dialogue();
+		hires();
+		loadImage("PORTR16.DAT"); // Melisandre
+		dialogue();
+		hires();
+		loadImage("PORTR17.DAT"); // Stannis
+		dialogue();
+		hires();
+		loadImage("PORTR18.DAT"); // Oberyn
+		dialogue();
+		hires();
+		loadImage("PORTR19.DAT"); // Cersey
+		dialogue();
+
+		io_needed = 1;
+		saveCharacters();
+		restorePageZero();
 		//SwitchToCommand("LABY");
 		SwitchToCommand("!DIR");
 }
+#endif
