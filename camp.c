@@ -1,0 +1,691 @@
+
+#include "tyrann.h"
+
+extern char textes[];
+extern char * ptTextes;
+extern char nbTextes;
+
+char * textesItems[55];
+
+extern char s; // direction (est)
+extern unsigned char x; // coords
+extern unsigned char y;
+
+extern struct character characters[6];
+
+extern unsigned char boussole;
+
+extern unsigned char cles[9][4]; // trousseau de clefs (36 octets)
+
+extern unsigned char ville; // ville courante
+
+extern char ca; // case courante
+
+extern unsigned char nb_combat;
+
+extern char io_needed;
+extern char eencre[];
+
+char *classe[] = { "Chevalier","Paladin","Ranger","Sorcier","Mestre","Septon" };
+char *etat[] = { "OK", "-Empoi- ", "-Paral- ", ">MORT< " };
+char *maisons[] = { "STARK","ARRYN","LANNISTER","TULLY","TYRELL","BARATHEON", "MARTELL"};
+
+char *sorts[] = { "SOMMEIL","FEU","PIERRE","VENIN","SANG","FOUDRE", "LAVE", "SEISME",
+				  "EAU", "SERUM", "MUSCLE", "BOUCLIER", "ELIXIR", "ECRAN", "VIE", "MORT",
+				  "EPEE-FEU", "FORCE", "CHARME", "VISION", "GLACE", "ILLUSION", "VENT", 
+				  "DRAGONS" };
+char tentatives = 0; // pour les coffres
+
+void loadTextesItems()
+{
+	char filename[16];
+	char ret, a;
+	char *ptr;
+	memset(filename, 0, 16);
+	sprintf(filename, "TITEMS.BIN", ville);
+	//printf("Chargement de %s\n", filename);
+    ret = DiscLoad(filename);        
+    //printf("Retour %d\n", ret);
+    if (ret==0) {
+		ptr = (char*)0xa000;
+		//printf("Nb NPC : %d\n", pmax);
+		loadTexts(ptr, textesItems);
+		//#ifdef debug
+		printf("Fin des textes, on utilise %d caracteres sur %d\n", 
+			(ptTextes-textes), TMAX);
+		puts("taper sur une touche pour continuer\n");
+        a = (char)getchar();
+        //#endif
+	}
+}
+
+void printTeam(void)
+{
+	char i,encre;
+	attribAtXY(0,20,A_FWWHITE);
+	attribAtXY(1,20,A_BGRED); // fond rouge
+	printAtXY(2,20," PERSONNAGE    CASTE     PV   ET  CA"); 
+	for(i=0;i<6;i++) {
+		switch(characters[i].cp) {
+			case 1:
+				encre = A_FWYELLOW; // jaune
+				break;
+			case 2:
+				encre = A_FWWHITE; // blanc
+				break;
+			case 3:
+				encre = A_FWCYAN; // cyan
+				break;
+			case 4:
+				encre = A_FWMAGENTA; // magenta
+				break;
+			case 5:
+				encre = A_FWBLUE; // bleu
+				break;
+			default:
+				encre = A_FWGREEN; // bleu		
+		}
+		if (characters[i].ok==4) encre = A_FWRED;
+		attribAtXY(1,21+i,encre);
+		printAtXY (2,21+i, itoa(i+1));
+		printAtXY (4,21+i, characters[i].nom);		
+		if (characters[i].ok==1) {
+			printAtXY (17,21+i,classe[characters[i].cp-1]);
+		} else {
+			printAtXY (17,21+i,etat[characters[i].ok-1]);
+		}
+		printAtXY (27,21+i, itoa(characters[i].pv));
+		printAtXY (32,21+i, itoa(characters[i].et));
+		printAtXY (37,21+i, itoa(characters[i].ca));
+	}
+}
+
+void money(char p)
+{
+	char a,i,j;
+	char titre[32];
+	int somme;
+	cls();
+	printFrame(18);
+	strcpy(titre, " < ");
+	strcat(titre, characters[p].nom);
+	strcat(titre, " DONNE > ");
+	j = strlen(titre);
+	a = (31-j)/2 + 4;
+	printTitle(a,2, A_BGRED, titre, j);
+	// affiche les persos
+	for(i=0;i<6;i++) {
+		printAtXY(5,4+i, itoa(i+1));
+		printAtXY(7,4+i, characters[i].nom);
+		printAtXY(19,4+i, itoa(characters[i].ri*10));
+	}
+	// affiche les richesses du héros sélectionné
+	printAtXY(5,13, "Votre Bourse :");
+	printAtXY(19,13, itoa(characters[p].ri*10));
+	printAtXY(27,13, "Cerfs Ag");
+	// demande la somme
+	printTitle(4,14, A_BGBLUE, "COMBIEN de C.Ag ?", 17);
+	somme = 0;
+	while(1) {
+		a = get();
+		if (a == '\r' || a == '\n')
+			break; // sort sur un retour chariot ou lf
+		else if (a<'0' || a>'9')
+			ping();
+		else {
+			// schéma de Horner
+			somme = somme*10 + (a - '0');
+			// si ça fait trop on repasse à 0 en pingant
+			if (somme > characters[p].ri*10) {
+				ping();
+				somme = 0;
+				// on efface aussi ce qu'il y avait
+				printAtXY(27,14, "        ");
+			}
+			// on affiche la somme courante
+			printAtXY(27,14, itoa(somme));
+		}	
+	}
+	// si la somme n'est pas nulle on demande le destinataire
+	if (somme != 0) {
+		printTitle(4,16, A_BGBLUE, "ENRICHIR QUEL HEROS ? (0:Aucun)", 31);
+		while(1) {
+			a = get();
+			if (a<'0' || a>'6')
+				ping(); // ping si pas correct
+			else
+				break; // correct : on sort
+		}
+		i = a - '1';
+		if ((i>=0) && (i!=p)) {
+			// c'est correct on transfère
+			characters[i].ri+=somme/10;
+			characters[p].ri-=somme/10;
+			ping();
+		}
+	}
+}
+
+void items(char p)
+{
+	char a,i,j, item,o;
+	char titre[32];
+	printTitle(4,25, A_BGBLUE, "Quel Objet ? (0:aucun) ?", 24);
+	while(1) {
+		a = get();
+		if (a<'0' || a>'6')
+			ping(); // ping si pas correct
+		else {
+			o = a - '1';
+			if(o==-1)
+				return; // on arrête tout
+			item = characters[p].sad[o];
+			if ((item<=0)||(item>21 && item<31)||(item>38)) {
+				ping();
+				printAtXY(6,25, "       !IMPOSSIBLE!       ");
+				wait(250);
+				return;
+			} else
+				break; // correct : on sort
+		}
+	}
+	// ici on a un bon objet
+	cls();
+	printFrame(18);
+	strcpy(titre, " < ");
+	strcat(titre, characters[p].nom);
+	strcat(titre, " DONNE > ");
+	j = strlen(titre);
+	a = (31-j)/2 + 4;
+	printTitle(a,2, A_BGRED, titre, j);
+	strcpy(titre, textesItems[item-1]);
+	j = strlen(titre);
+	printTitle(5,3, A_BGMAGENTA, titre, j);
+	// affiche les persos
+	for(i=0;i<6;i++) {
+		printAtXY(10,7+i, itoa(i+1));
+		printAtXY(12,7+i, characters[i].nom);
+	}
+	printTitle(4,16, A_BGBLUE, "A QUEL HEROS ? (0:Aucun)", 24);
+	while(1) {
+		a = get();
+		if (a<'0' || a>'6')
+			ping(); // ping si pas correct
+		else
+			break; // correct : on sort
+	}
+	a = a - '1';
+	if ((a>=0) && (a!=p)) {
+		// sac à dos destination plein ?
+		if (characters[a].sad[5]>0) {
+			ping();
+			printAtXY(6,25, "       !IMPOSSIBLE!       ");
+			wait(250);
+			return;
+		}
+		// c'est correct on transfère
+		// on cherche la première place libre
+		i=0; while(characters[a].sad[i]>0) i++;
+		characters[a].sad[i] = characters[p].sad[o];
+		characters[p].sad[o]=0;
+		// compacte le sac à dos
+		while(o<5) {
+			characters[p].sad[o]=characters[p].sad[o+1];
+			characters[p].sad[o+1]=0;
+			o++;
+		}
+		ping();
+	}
+}
+
+void spells(char p)
+{
+	char i,a,j, max;
+	char titre[32];
+	
+	// tests
+	/*
+	characters[0].ok=2;
+	characters[0].et=2;
+	characters[1].ok=3;
+	characters[1].et=2;
+	characters[2].ok=4;
+	characters[2].et=2;
+	characters[3].ok=3;
+	characters[3].et=2;
+	characters[4].ni=8;
+	*/
+	
+	cls();
+	printFrame(14);
+	printTitle(11,2, A_BGRED, " < * SORTS * > ", 15);
+	max = characters[p].ni > 8 ? 8 : characters[p].ni; 
+	for(i=0;i<max;i++) {
+		printAtXY(11,4+i, itoa(i+1));
+		printAtXY(14,4+i, sorts[(characters[p].cp-4)*8+i]);
+		printAtXY(25,4+i, "(");
+		printAtXY(27,4+i, itoa(characters[p].sp[i]));
+		printAtXY(30,4+i, ")");
+	}
+	if (characters[p].cp!=5) {
+		printTitle(14,14, A_BGRED, " <ESPACE> ", 10);
+		a = get();
+	} else { // mestre
+		printTitle(7,14, A_BGRED, " Un sort de soin (O/N) ? ", 25);
+		a = get();
+		if (a!='o' && a!='O')
+			return;
+		printAtXY(6,14, "                               ");
+		// affichage équipe
+		printTeam();
+		printAtXY(8,12, "        LEQUEL  ?      ");
+		while(1) {
+			a = get();
+			if (a<'1' || a>'7' || a=='4' || a=='6') {
+				zap(); // zap si pas correct
+				printAtXY(6,12, "       !IMPOSSIBLE!       ");
+				wait(250);
+				printAtXY(8,12, "        LEQUEL  ?      ");
+			} else {
+				i = a - '1';
+				if(i>=characters[p].ni) {
+					zap(); // pas du bon niveau
+					printAtXY(6,12, "       !IMPOSSIBLE!       ");
+					wait(250);
+					printAtXY(8,12, "        LEQUEL  ?      ");
+				} else
+					break; // correct : on sort
+			}
+		}		
+		strcpy(titre, "Incantation de ");
+		strcat(titre, sorts[(characters[p].cp-4)*8+i]);
+		j = strlen(titre);
+		a = (31-j)/2 + 4;
+		printAtXY(a,12, titre);
+		if(i==4) {
+			// soigne tout le monde
+			for(i=0;i<6;i++) {
+				if (characters[i].ok!=4) {
+					characters[i].et=characters[i].pv;
+					characters[i].ok=1;
+				}
+			}
+		} else {
+			printAtXY(7,16, " SOIGNER QUI ? (0:Aucun) ");
+			while(1) {
+				a = get();
+				if (a<'0' || a>'6')
+					ping(); // ping si pas correct
+				else
+					break; // correct : on sort
+			}
+			a = a - '1';
+			if (a>=0) {
+				// soigne a
+				// cas impossibles
+				if((i==0 && characters[a].ok==4) || 
+				   (i==1 && characters[a].ok!=2) ||
+				   (i==2 && characters[a].ok!=3) ||
+				   (i==6 && characters[a].ok!=4)) {
+				    zap();
+				    printAtXY(6,12, "       !IMPOSSIBLE!       ");
+				    wait(250);
+				} else {
+					// ça marche
+					characters[a].et=characters[a].pv;
+					if(i!=0) characters[a].ok=1;
+				}
+			}
+		}
+	}
+}
+
+void inspect(void)
+{
+	char a, i, j;
+	char titre[32];
+	
+	printTitle(8,4, A_BGRED, "INSPECTER QUEL HEROS ? ", 23);
+	while(1) {
+		a = get();
+		if (a<'1' || a>'6')
+			ping(); // ping si pas correct
+		else
+			break; // correct : on sort
+	}
+	cls();
+	printFrame(23);
+	i = a - '1';
+	// construction du nom/titre
+	strcpy(titre, " < ");
+	strcat(titre, characters[i].nom);
+	if(characters[i].mp != 8) {
+		strcat(titre, " ");
+		strcat(titre, maisons[characters[i].mp-1]);
+	}
+	strcat(titre, " > ");
+	j = strlen(titre);
+	a = (31-j)/2 + 4;
+	// affichage du titre
+	printTitle(a,2, A_BGRED, titre, j);
+	// affichage classe, niv, xp
+	printAtXY(5,  4, "Carr :");
+	printAtXY(11, 4, classe[characters[i].cp-1]);
+	printAtXY(22, 4, "Niv:");
+	printAtXY(27, 4, itoa(characters[i].ni));
+	printAtXY(29, 4, "EXP:");
+	printAtXY(33, 4, itoa(characters[i].xp));
+	
+	// affichage santé, pv
+	printAtXY(5,  6, "Sante:");
+	printAtXY(11, 6, etat[characters[i].ok-1]);
+	printAtXY(22, 6, "PV :");
+	printAtXY(27, 6, itoa(characters[i].et));
+	printAtXY(30, 6, "/");
+	printAtXY(32, 6, itoa(characters[i].pv));
+	// affichage bourse
+	printAtXY(5,  8, "Bourse:");
+	printAtXY(13, 8, itoa(characters[i].ri*10));
+	printAtXY(21, 8, "Cerfs d'Argent");
+	
+	// affichage de l'équipement porté
+	printAtXY(5,  10, "Arme D:");
+	if (characters[i].wr != 0)
+		printAtXY(13, 10, textesItems[characters[i].wr-1]);
+
+	printAtXY(5,  11, "Arme G:");
+	if (characters[i].wl != 0)
+		printAtXY(13, 11, textesItems[characters[i].wl-1]);
+	
+	printAtXY(5,  12, "Animal:");
+	if (characters[i].bt != 0)
+		printAtXY(13, 12, textesItems[characters[i].bt-1]);
+
+	printAtXY(5,  13, "Armure:");
+	if (characters[i].pt != 0)
+		printAtXY(13, 13, textesItems[characters[i].pt-1]);
+	printAtXY(29, 13, "CA:");
+	printAtXY(33, 13, itoa(characters[i].ca));
+	
+	// affiche les caracs
+	printTitle(4,15, A_BGRED, "CC  CT  Fo  Ag  In  FM ", 23);
+	printAtXY(7,16, itoa(characters[i].cc));
+	printAtXY(11,16, itoa(characters[i].ct));
+	printAtXY(15,16, itoa(characters[i].fo));
+	printAtXY(19,16, itoa(characters[i].ag));
+	printAtXY(23,16, itoa(characters[i].in));
+	printAtXY(27,16, itoa(characters[i].fm));
+	// affichage du sac à dos
+	for(j=0;j<6;j++) {
+		printAtXY(5,18+j, itoa(j+1));
+		if (characters[i].sad[j]!=0) {
+			if (characters[i].sad[j]-1<nbTextes)
+			    printAtXY(8,18+j, textesItems[characters[i].sad[j]-1]);
+			else
+				printAtXY(8,18+j, "objet bugge");
+		} else {
+			printAtXY(8,18+j, "..............");
+		}
+	}
+	// les morts et les paralysés ne peuvent pas lancer de sorts!
+	if (characters[i].cp>3 && characters[i].ok<3)
+		printTitle(10,25, A_BGRED, " <ESPACE> : SORTS ", 18);
+	else
+		printTitle(10,25, A_BGRED, " <ESPACE> : RETOUR", 18);
+	printTitle(4,26, A_BGBLUE, " DONNER :  ", 11);
+	printTitle(16,26, A_BGRED, " A)rgent O)bjet ? ", 17);
+	while(1) {
+		a = get();
+		if (a=='A') {
+			money(i);
+			break;
+		} else if (a=='O') {
+			items(i);
+			break;
+		} else if (a==' ') {
+			if (characters[i].cp>3 && characters[i].ok<3)
+				spells(i);
+			break;
+		} else
+			ping();
+	}
+}
+
+void printTeamFull(void)
+{
+	char i, encre, a;
+	cls();
+	ink(eencre[ville-1]);
+	// affichage des titres
+	printTitle(8,2, A_BGRED, " * TYRANN 3 - EQUIPE * ", 23);
+	printTitle(2,4, A_BGRED, "PERSONNAGES MAISON    CARRIERE NIV ", 35);
+	printTitle(2,5, A_BGBLUE, " Argent      CC CT Fo Ag In FM PV  ", 35);
+	// affichage persos
+	for(i=0;i<6;i++) {
+		switch(characters[i].cp) {
+			case 1:
+				encre = A_FWYELLOW; // jaune
+				break;
+			case 2:
+				encre = A_FWWHITE; // blanc
+				break;
+			case 3:
+				encre = A_FWCYAN; // cyan
+				break;
+			case 4:
+				encre = A_FWMAGENTA; // magenta
+				break;
+			case 5:
+				encre = A_FWBLUE; // bleu
+				break;
+			default:
+				encre = A_FWGREEN; // bleu		
+		}
+		attribAtXY(1,7+3*i,encre);
+		printAtXY (3,7+3*i, itoa(i+1));
+		printAtXY (5,7+3*i, characters[i].nom);		
+		printAtXY (17,7+3*i, maisons[characters[i].mp-1]);		
+		printAtXY (27,7+3*i, classe[characters[i].cp-1]);
+		printAtXY (37,7+3*i, itoa(characters[i].ni));
+		printAtXY (6,7+3*i+1, itoa(characters[i].ri*10));
+		printAtXY (13,7+3*i+1, "ca");
+		printAtXY (18,7+3*i+1, itoa(characters[i].cc));
+		printAtXY (21,7+3*i+1, itoa(characters[i].ct));
+		printAtXY (24,7+3*i+1, itoa(characters[i].fo));
+		printAtXY (27,7+3*i+1, itoa(characters[i].ag));
+		printAtXY (30,7+3*i+1, itoa(characters[i].in));
+		printAtXY (33,7+3*i+1, itoa(characters[i].fm));
+		printAtXY (36,7+3*i+1, itoa(characters[i].pv));
+	}
+	printTitle(2,25, A_BGBLUE, " Argent      CC CT Fo Ag In FM PV  ", 35);
+	printTitle(2,26, A_BGRED, "            < ESPACE >            ", 34);
+	while(1) {
+		a = get();
+		if (a==' ') {
+			break;
+		} else
+			ping();
+	}
+}
+
+void chest(void)
+{
+	char a,i,dff,ss;
+	cls();
+	printTitle(4,6, A_BGRED, "Voila un coffre, Qui l'ouvre ? ", 31);
+	printTeam();
+	while(1) {
+		a = get();
+		if (a<'0' || a>'6')
+			ping(); // ping si pas correct
+		else
+			break; // correct : on sort
+	}
+	a = a - '1';
+	tentatives+=5;
+	if (characters[a].cp!=3) {
+		printAtXY(9,9, "C'est pas son truc !");
+		zap();
+		return;
+	}
+	for(i=0;i<6;i++) {
+		if (characters[a].sad[i]==34) {
+			dff=35;
+			break;
+		} else dff=-25;
+	}
+	ss = rand()%100+1;
+	if(ss>characters[a].ag+dff+tentatives) {
+		printAtXY(11,12, itoa(ss));
+		printAtXY(14,12, "Et non ! t1:");
+		printAtXY(27,12, itoa(tentatives));
+		zap();
+		wait(150);
+		return;
+	}
+	printAtXY(11,12, "Ouvert ! Bravo.");
+	ping();
+	printAtXY(6,12, "Il trouve : ");
+	if(ca==21) {
+		cles[ville-1][0]=1;
+		printAtXY(19,12, "Une clef en fer"); // clé 1
+		wait(150);
+		ca=0;
+		return;
+	}
+	if(ca==26) {
+		cles[ville-1][3]=1;
+		printAtXY(19,12, "Une clef en or"); // clé 4 (prison)
+		wait(150);
+		ca=0;
+		return;
+	}
+	if(ca==27) {
+		
+		ca=0;
+		return;
+	}
+	ss = rand()%100+1;
+	if(ss<5||ss>95) {
+		ss=rand()%5+49;
+	} else {
+		do ss=rand()%22+20;
+		while(ss==40 || (ss>21 && ss<29));
+	}
+	printAtXY(19,12, textesItems[ss-1]);
+	wait(150);
+	if(characters[a].sad[5]>0) {
+		zap();
+		printAtXY(11,14, "Sac a dos plein ! Dommage.");
+		wait(150);
+		return;
+	}
+	for(i=0;i<6;i++) {
+		if (characters[a].sad[i]==0) {
+			characters[a].sad[i]=ss;
+			ca=0;
+			return;
+		}
+	}
+}
+		
+void sleep(void)
+{
+/*
+21500 CLS:PRINT @10,8;" UNE PETITE SIESTE "
+21510 GOSUB 22000:PRINT @7,10;" VOUS RECUPEREZ VOS SORTS ":WAIT TI*5
+21580 PRINT @10,12;"  BON VOYAGE  ":WAIT TI*5
+21590 RETURN
+
+22000  FOR P=1TO6
+22010  IF ET(P)>0 AND ET(P)<5 THEN ET(P)=ET(P)+FNA(3)
+22020  IF CP(P)<4 THEN 22070
+22030     FOR I=1TONI(P)
+22040     SN(P,I)=FNA(2)+2
+22050     NEXT I
+22070 NEXT P
+22100 RETURN
+*/
+	char p,i,max;
+	cls();
+	printAtXY(11,9, "Une petite sieste ");
+	
+	for(p=0;p<6;p++) {
+		if(characters[p].et>0 && characters[p].et<5)
+			characters[p].et+=rand()%3+1;
+		if(characters[p].cp>3) {
+			max = characters[p].ni > 8 ? 8 : characters[p].ni; 
+			for(i=0;i<max;i++)
+				characters[p].sp[i]=rand()%2+3;
+		}
+	}	
+	printAtXY(8,10, "Vous recuperez vos sorts ");
+	wait(150);
+}	
+			  
+void camping(void)
+{
+	char i, encre, a;
+	char *ptr;
+	while(1) {
+		text();cls();
+		ptr = (char*)0x26a; *ptr = *ptr & 254; // Vire le curseur 
+		ink(eencre[ville-1]);
+		printFrame(15);
+		printTitle(8,2, A_BGRED, "<  ++ CAMPEMENT ++  >", 21);
+		printAtXY(9,6, "1. Inspecter un heros");
+		printAtXY(9,8, "2. Visualiser l'equipe");
+		if (ca>20 && ca<29)
+			printAtXY(9,10, "3. Ouvrir un coffre");
+		printAtXY(9,12,"4. Se reposer");
+		printAtXY(13,16,"5. Lever le camp");
+		// affichage équipe
+		printTeam();
+		a = get();
+		switch(a) {
+			case '1':
+				inspect();
+				break;
+			case '2':
+				printTeamFull();
+				break;
+			case '3':
+				if (ca>20 && ca<29)
+					chest();
+				break;
+			case '4':
+				sleep();
+				break;
+			case '5':
+				cls();
+				printAtXY(8,10, "Bon voyage !");
+				wait(150);
+				return;
+				break;
+			default:
+				ping();
+				break;	
+		}
+		//attribAtXY(3,0,a);
+	}
+	
+}
+
+void main()
+{		
+		char j;
+		unsigned int *seed;
+		backupPageZero();
+		io_needed=0;
+        loadCharacters();
+        loadTextesItems();
+		seed = (unsigned int *) 630; // timer
+		srand(*seed);
+		j = rand();
+		camping();
+		io_needed = 1;
+		saveCharacters();
+		restorePageZero();
+		SwitchToCommand("LABY");
+		//SwitchToCommand("!DIR");
+}
