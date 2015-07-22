@@ -1,0 +1,74 @@
+
+10 TEXT:CLS:PAPER0:INK6
+30 DIM TPERSO$(2,15)
+35 O1=#A000
+36 POKEO1,2
+40 FOR P=1TO2
+45  O1=O1+1:POKEO1,15
+50  FOR X=1TO15
+60   READ TP$(P,X):PRINT TP$(P,X)
+61   LG=LEN(TP$(P,X))
+62   O1=O1+1:POKEO1,LG
+63   IF LG=0 THEN 70
+64   FOR J=1 TO LG
+65     O1=O1+1:POKEO1,ASC(MID$(TP$(P,X),J,1))
+66   NEXT J
+70 NEXT X,P
+80 PRINT"SAUVEGARDE DU TABLEAU"
+90 REM STORE TP$,"TX-PERS6",S
+95 SAVEO "TXPERS6.BIN",A#A000,EO1
+100 PING:ZAP:END
+
+200 REM TEXTES DE EYRIE:
+210 REM Petyr Baelish, Sansa Starck
+
+1001 DATA " * BIENVENUE au * "
+1002 DATA "Val d'Arryn,  Erye"
+1003 DATA "vous  voila  enfin"
+1004 DATA "Et cette  potion ?"
+1005 DATA "le Val  est  riche"
+1006 DATA "en  plantes  rares"
+1007 DATA "demandez  a  Sansa"
+1008 DATA "elle connait  bien"
+1009 DATA "le jardin  et  ses"
+1010 DATA "tresors   vegetaux"
+1011 DATA "je la  previens de"
+1012 DATA "votre visite, elle"
+1013 DATA "sera ravie d avoir"
+1014 DATA "des  nouvelles  de"
+1015 DATA "  son pere  <.SP.>"
+
+1101 DATA "Bonjour je sais que"
+1102 DATA "vous allez vers le"
+1103 DATA "Nord.  Merci de ce"
+1104 DATA "salut de  Maergery"
+1105 DATA "Mais parlons de ce"
+1106 DATA "jardin  du  Val si"
+1107 DATA "riche  de  plantes"
+1108 DATA "j'ai ce  que  vous"
+1109 DATA "cherchez  dans  un"
+1110 DATA "coffre   ici  meme"
+1111 DATA "Je vous  le  donne"
+1112 DATA "voila la  clef des"
+1113 DATA "cellules..."
+1114 DATA "Embrassez mon pere"
+1115 DATA "et tout Winterfell"
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

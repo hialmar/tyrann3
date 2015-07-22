@@ -1,0 +1,72 @@
+
+10 TEXT:CLS:PAPER0:INK6
+30 DIM TPERSO$(2,15)
+35 O1=#A000
+36 POKEO1,2
+40 FOR P=1TO2
+45  O1=O1+1:POKEO1,15
+50  FOR X=1TO15
+60   READ TP$(P,X):PRINT TP$(P,X)
+61   LG=LEN(TP$(P,X))
+62   O1=O1+1:POKEO1,LG
+63   IF LG=0 THEN 70
+64   FOR J=1 TO LG
+65     O1=O1+1:POKEO1,ASC(MID$(TP$(P,X),J,1))
+66   NEXT J
+70 NEXT X,P
+80 PRINT"SAUVEGARDE DU TABLEAU"
+90 REM STORE TP$,"TX-PERS3",S
+95 SAVEO "TXPERS3.BIN",A#A000,EO1
+100 PING:ZAP:END
+
+1000 REM TEXTES DE Stannis,...
+1001 DATA "C'est STORM'S END"
+0002 DATA "Mon frere  Robert"
+1003 DATA "est fou de croire"
+1004 DATA "en votre aptitude"
+1005 DATA "Il est fou ! mais"
+1006 DATA "Un Roi Fou, helas"
+1007 DATA "c'est devenu banal"
+1008 DATA "a Port-Real ! ..."
+1009 DATA "6 hommes et un peu"
+1010 DATA "de Magie ! Pff .."
+1011 DATA "Soit ! allez voir"
+1012 DATA "Lady   Melisandre"
+1013 DATA "la sorciere rouge"
+1014 DATA "grande  pretresse"
+1015 DATA "Quelle folie !<.>"
+
+
+1021 DATA "Dans  les flammes"
+1022 DATA "le Dieu  Lumineux"
+1023 DATA "dit de vous aider"
+1024 DATA "Aussi je n'ai pas"
+1025 DATA "d'autre choix que"
+1026 DATA "de lui obeir.Vous"
+1027 DATA "cherchez le 'sang"
+1028 DATA "maudit',  je vous"
+1029 DATA "l'offre... Puisse"
+1030 DATA "la lumiere divine"
+1031 DATA "eclairer le sombre"
+1032 DATA "chemin  que  vous"
+1033 DATA "aller prendre.vous"
+1034 DATA "en  aurez  besoin"
+1035 DATA "Allez en paix   >"
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,72 @@
+
+10 TEXT:CLS:PAPER0:INK6
+30 DIM TPERSO$(2,15)
+35 O1=#A000
+36 POKEO1,2
+40 FOR P=1TO2
+45  O1=O1+1:POKEO1,15
+50  FOR X=1TO15
+60   READ TP$(P,X):PRINT TP$(P,X)
+61   LG=LEN(TP$(P,X))
+62   O1=O1+1:POKEO1,LG
+63   IF LG=0 THEN 70
+64   FOR J=1 TO LG
+65     O1=O1+1:POKEO1,ASC(MID$(TP$(P,X),J,1))
+66   NEXT J
+70 NEXT X,P
+80 PRINT"SAUVEGARDE DU TABLEAU"
+90 REM STORE TP$,"TX-PERS7",S
+95 SAVEO "TXPERS7.BIN",A#A000,EO1
+100 PING:ZAP:END
+
+10000 REM TEXTES DE TYRION,TYWIN
+10001 DATA " *  BIENVENUE  a  * "
+10002 DATA " * CASTERLY  ROC  * "
+10003 DATA "la maison  Lannister"
+10004 DATA " Hum,  Ned Starck..."
+10005 DATA "a raison,et mon pere" 
+10006 DATA "soutient cette  idee"
+10007 DATA "je vous conseille de"
+10008 DATA "ne pas partir  avant"
+10009 DATA "d'avoir gouter notre"
+10010 DATA "delicieuse  biere..."
+10011 DATA "Prenez ces gregeois "
+10012 DATA "c'est tres  puissant"
+10013 DATA "je vous  en  donne 2"
+10014 DATA "J'aimerai tant  vous"
+10015 DATA "accompagner   <.SP.>"
+
+10101 DATA "L'ennemi de mon enn."
+10102 DATA "vous connaissez non?"
+10103 DATA "Aussi disons  que je"
+10104 DATA "suis  d'accord  avec"
+10105 DATA "Starck et Roi Robert"
+10106 DATA "Il faut anticiper en"
+10107 DATA "franchissant  le mur"
+10108 DATA "et explorer  le Nord"
+10109 DATA "finissez  la  potion"
+10110 DATA "et allez voir Starck"
+10111 DATA "Si vous trouvez  mon"
+10112 DATA "fils JAIME, aidez le"
+10113 DATA "Les Lannister paient"
+10114 DATA "toujours leurs dettes"
+10115 DATA "A Bientot    <....> "
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

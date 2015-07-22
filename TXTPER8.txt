@@ -1,0 +1,74 @@
+
+10 TEXT:CLS:PAPER0:INK6
+30 DIM TPERSO$(2,15)
+35 O1=#A000
+36 POKEO1,2
+40 FOR P=1TO2
+45  O1=O1+1:POKEO1,15
+50  FOR X=1TO15
+60   READ TP$(P,X):PRINT TP$(P,X)
+61   LG=LEN(TP$(P,X))
+62   O1=O1+1:POKEO1,LG
+63   IF LG=0 THEN 70
+64   FOR J=1 TO LG
+65     O1=O1+1:POKEO1,ASC(MID$(TP$(P,X),J,1))
+66   NEXT J
+70 NEXT X,P
+80 PRINT"SAUVEGARDE DU TABLEAU"
+90 REM STORE TP$,"TX-PERS8",S
+95 SAVEO "TXPERS8.BIN",A#A000,EO1
+100 PING:ZAP:END
+
+200 REM TEXTES de RIVERRUN:
+210 Blackfish et Jaime
+
+1001 DATA "ICI C'EST RIVERRUN"
+1002 DATA "Catelyn m'a dit de"
+1003 DATA "vous aider pour LA"
+1004 DATA "Mission de la der-"
+1005 DATA " niere chance pour"
+1006 DATA "le royaume qui est"
+1007 DATA "en  danger   vital"
+1008 DATA "Elle m'a aussi dit"
+1009 DATA "de punir le  tueur"
+1010 DATA "de roi ! JAIME est"
+1011 DATA "bien en prison ici"
+1012 DATA "Tywin et la Reine"
+1013 DATA "le veulent ? soit!"
+1014 DATA "voila la clef de sa"
+1015 DATA "cellule     <.SP.>"
+
+1021 DATA "Oui  c'est  bien moi"
+1022 DATA "j'etais venu pour la"
+1023 DATA "mission, mais ce fou"
+1024 DATA "de Blackfish  a fait"
+1025 DATA "l'erreur d'ecouter sa"
+1026 DATA "niece Catelyn Starck"
+1027 DATA "Mais  au nom du Roi,"
+1028 DATA "de Tywinn  Lannister"
+1029 DATA "et de la Reine, Il a"
+1030 DATA "compris que  c'etait"
+1031 DATA "dangereux pour lui.."
+1032 DATA "Merci mes amis  pour"
+1033 DATA "votre intervention.."
+1034 DATA "Voila une bourse qui"
+1035 DATA "pese lourd ! < ... >"
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,71 @@
+
+10 TEXT:CLS:PAPER0:INK6
+30 DIM TPERSO$(2,15)
+35 O1=#A000
+36 POKEO1,2
+40 FOR P=1TO2
+45  O1=O1+1:POKEO1,15
+50  FOR X=1TO15
+60   READ TP$(P,X):PRINT TP$(P,X)
+61   LG=LEN(TP$(P,X))
+62   O1=O1+1:POKEO1,LG
+63   IF LG=0 THEN 70
+64   FOR J=1 TO LG
+65     O1=O1+1:POKEO1,ASC(MID$(TP$(P,X),J,1))
+66   NEXT J
+70 NEXT X,P
+80 PRINT"SAUVEGARDE DU TABLEAU"
+90 REM STORE TP$,"TX-PERS2",S
+95 SAVEO "TXPERS2.BIN",A#A000,EO1
+100 PING:ZAP:END
+
+1000 REM TEXTES DE Oberyn et Sorciere,...
+1001 DATA "Bienvenue a SUNSPEAR"
+1002 DATA "Vous osez  venir ici"
+1003 DATA "au nom de Tywin ? !!"
+1004 DATA "hum  j'hesite  entre"
+1005 DATA "vous empaler ou vous"
+1006 DATA "bruler vif !! ......"
+1007 DATA "Mais comme vous etes"
+1008 DATA "du royaume de Tyrann"
+1009 DATA "Je vous epargnerai.."
+1010 DATA "Oui une sorciere est"
+1011 DATA "sous ma protection.."
+1012 DATA "Elle  est  bien  ici"
+1013 DATA "Voila la clef de son"
+1014 DATA "laboratoire ! Allez "
+1015 DATA "la supplier... <SP>"
+
+1101 DATA "Ha ha ha on a besoin"
+1102 DATA "de moi ?  Tyr quoi ?"
+1103 DATA "connais pas ! Soit !"
+1104 DATA "Westeros a besoin de"
+1105 DATA "ma potion ? je serai"
+1106 DATA "enfin reconnue, donc"
+1107 DATA "Les 6 ingredients:  "
+1108 DATA " 1 - venin de vipere"'Dorne
+1109 DATA " 2 - Fleur de Lys   "'Highgarden
+1110 DATA " 3 - encre de poulpe"'Pike
+1111 DATA " 4 - rose du Val    "'Val d'Arryn
+1112 DATA " 5 - huile du Roc   "'Castraly roc
+1113 DATA " 6 - foie de truite "'Riverrun
+1114 DATA " On se retrouvera au"
+1115 DATA "Laboratoire du Nord."
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,71 @@
+
+10 TEXT:CLS:PAPER0:INK6
+30 DIM TPERSO$(2,15)
+35 O1=#A000
+36 POKEO1,2
+40 FOR P=1TO2
+45  O1=O1+1:POKEO1,15
+50  FOR X=1T015
+60   READ TP$(P,X):PRINT TP$(P,X)
+61   LG=LEN(TP$(P,X))
+62   O1=O1+1:POKEO1,LG
+63   IF LG=0 THEN 70
+64   FOR J=1 TO LG
+65     O1=O1+1:POKEO1,ASC(MID$(TP$(P,X),J,1))
+66   NEXT J
+70 NEXT X,P
+80 PRINT"SAUVEGARDE DU TABLEAU"
+90 REM STORE TP$,"TX-PERS4",S
+95 SAVEO "TXPERS4.BIN",A#A000,EO1
+100 PING:ZAP:END
+
+200 REM TEXTES DE LORAS,...
+1001 DATA "Ici cest HIGHGARDEN"
+1002 DATA "C'est  un  paradis"
+1003 DATA "laissez  moi  vous"
+1004 DATA "montrer nos tresors"
+1005 DATA "Non ? ...  Heu vous"
+1006 DATA "me troublez  alors"
+1007 DATA "que vous n'avez pas"
+1008 DATA "le temps  pour des"
+1009 DATA "flaneries reveuses"
+1010 DATA "Une autre fois !"
+1011 DATA "Soit !  allez voir"
+1012 DATA "ma soeur  Maergery"
+1013 DATA "elle est  toujours"
+1014 DATA "serviable avec les"
+1015 DATA "Braves      <.SP.>"
+
+1101 DATA "La  maison  Tyrell"
+1102 DATA "fait confiance aux"
+1103 DATA "choix du Roi Robert"
+1104 DATA "votre mission  est"
+1105 DATA "soutenue par  tout"
+1106 DATA "Westeros, aussi je"
+1107 DATA "vous donne la fleur"
+1108 DATA "de Lys du Bief"
+1109 DATA "Allez dans la salle"
+1110 DATA "des coffres, voici"
+1111 DATA "la clef.  Merci de"
+1112 DATA "saluez  Lady Sansa"
+1113 DATA "Qui vit a Arryn en"
+1114 DATA "Eyrie je crois...."
+1115 DATA "Dieu vous aide <.>"
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

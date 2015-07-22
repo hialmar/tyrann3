@@ -1,0 +1,70 @@
+
+10 TEXT:CLS:PAPER0:INK6
+30 DIM TPERSO$(2,15)
+35 O1=#A000
+36 POKEO1,2
+40 FOR P=1TO2
+45  O1=O1+1:POKEO1,15
+50  FOR X=1TO15
+60   READ TP$(P,X):PRINT TP$(P,X)
+61   LG=LEN(TP$(P,X))
+62   O1=O1+1:POKEO1,LG
+63   IF LG=0 THEN 70
+64   FOR J=1 TO LG
+65     O1=O1+1:POKEO1,ASC(MID$(TP$(P,X),J,1))
+66   NEXT J
+70 NEXT X,P
+80 PRINT"SAUVEGARDE DU TABLEAU"
+90 REM STORE TP$,"TX-PERS10",S
+95 SAVEO "TXPERS10.BIN",A#A000,EO1
+100 PING:ZAP:END
+
+10000 REM TEXTES DE JOHN
+10001 DATA "Bienvenue au Chateau"
+10002 DATA "Noir de la Garde  de"
+10003 DATA "nuit.    Vous pensez"
+10004 DATA "etre pret a franchir"
+10005 DATA "le mur ?Hum, je sais"
+10006 DATA "qu'on a plus  ni  le"
+10007 DATA "temps ni le choix  !"
+10008 DATA "...................."
+10009 DATA "Vous connaissez tout"
+10010 DATA "Westeros a present"
+10011 DATA "Bravo !  mais ce que"
+10012 DATA "vous  avez  affronte"
+10013 DATA "n'est qu'amusement !"
+10014 DATA "voila  la  clef pour"
+10015 DATA "utiliser l'ascenseur"
+
+10101 DATA "   Nous y voila !!! "
+10102 DATA "Nous allons franchir"
+10103 DATA "le mur et  retrouver"
+10104 DATA " Le Lord Commander !"
+10105 DATA "Une escouade  de  la"
+10106 DATA "garde de  nuit  nous"
+10107 DATA "attend et sera notre"
+10108 DATA "guide  dans  ce vrai"
+10109 DATA "Nord, glacial et aux"
+10110 DATA "1000 dangers  !! "
+10111 DATA "Soyez sur vos gardes" 
+10112 DATA "aussitot  la  grille"
+10113 DATA "ouverte et franchie "
+10114 DATA "LA SUITE SERA AU NORD"
+10115 DATA " *  Dans TYRANN 4  *"
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

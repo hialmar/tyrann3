@@ -1,0 +1,74 @@
+
+10 TEXT:CLS:PAPER0:INK6
+30 DIM TPERSO$(2,15)
+35 O1=#A000
+36 POKEO1,2
+40 FOR P=1TO2
+45  O1=O1+1:POKEO1,15
+50  FOR X=1TO15
+60   READ TP$(P,X):PRINT TP$(P,X)
+61   LG=LEN(TP$(P,X))
+62   O1=O1+1:POKEO1,LG
+63   IF LG=0 THEN 70
+64   FOR J=1 TO LG
+65     O1=O1+1:POKEO1,ASC(MID$(TP$(P,X),J,1))
+66   NEXT J
+70 NEXT X,P
+80 PRINT"SAUVEGARDE DU TABLEAU"
+90 REM STORE TP$,"TX-PERS5",S
+95 SAVEO "TXPERS5.BIN",A#A000,EO1
+100 PING:ZAP:END
+
+200 REM TEXTES DES GREYJOY ,...
+210 Asha et Theon Greyjoy
+
+1001 DATA " BIENVENUE A PIKE "
+1002 DATA "les Fer natifs ont"
+1003 DATA "parcouru toutes les"
+1004 DATA "mers connues et il"
+1005 DATA "me semble que vous"
+1006 DATA "cherchez une encre"
+1007 DATA "speciale pour  une"
+1008 DATA "potion  ancestrale"
+1009 DATA "mon frere Theon"
+1010 DATA "saura  en  trouver"
+1011 DATA "je  vous  previens"
+1012 DATA "Hum,il est bizarre"
+1013 DATA "ne soyez pas  trop"
+1014 DATA "surpris   par  son"
+1015 DATA " attitude   <.SP.>"
+
+1101 DATA "Mon  maitre  n'est"
+1102 DATA "pas avec vous ? je"
+1103 DATA "dois lui obeir  et"
+1104 DATA "je ne sais pas  si"
+1105 DATA "je peux vous aider"
+1106 DATA "......"
+1107 DATA "Hein ?   J'attends"
+1108 DATA "qu'il vienne non ?"
+1109 DATA "......"
+1110 DATA "Hum, ... Asha vous"
+1111 DATA "envoie, le maitre "
+1112 DATA "en a peur, alors.."
+1113 DATA "Hum, ..... l'encre"
+1114 DATA "est qq par  ici "
+1115 DATA "Partez vite <.SP.>"
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

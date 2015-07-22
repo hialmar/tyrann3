@@ -1,0 +1,72 @@
+
+10 TEXT:CLS:PAPER0:INK6
+30 DIM TPERSO$(2,15)
+35 O1=#A000
+36 POKEO1,2
+40 FOR P=1TO2
+45  O1=O1+1:POKEO1,15
+50  FOR X=1TO15
+60   READ TP$(P,X):PRINT TP$(P,X)
+61   LG=LEN(TP$(P,X))
+62   O1=O1+1:POKEO1,LG
+63   IF LG=0 THEN 70
+64   FOR J=1 TO LG
+65     O1=O1+1:POKEO1,ASC(MID$(TP$(P,X),J,1))
+66   NEXT J
+70 NEXT X,P
+80 PRINT"SAUVEGARDE DU TABLEAU"
+90 REM STORE TP$,"TX-PERS1",S
+95 SAVEO "TXPERS1.BIN",A#A000,EO1
+100 PING:ZAP:END
+
+1000 REM TEXTES DE Robert et Cersei,...
+1001 DATA "Bienvenue a PORT REAL"
+1002 DATA "la Reine Tyrann  peut"
+1003 DATA "compter  sur   l'aide"
+1004 DATA "de tout Westeros, qui"
+1005 DATA "attend  cette mission"
+1006 DATA "Trouvez  la  sorciere"
+1007 DATA "qui connait la potion"
+1008 DATA "de protection du Nord"
+1009 DATA "Ensuite  allez   voir"
+1010 DATA "Ned a Winterfell."
+1011 DATA "Ha! si je n'etais pas"
+1012 DATA "le Roi, je serais des"
+1013 DATA "votres. Mais avant de"
+1014 DATA "partir, la Reine veut"
+1015 DATA "vous voir.      <...>"
+
+1021 DATA "Je n'aurai jamais cru"
+1022 DATA "voir mon pere, le Roi"
+1023 DATA "et Ned Starck sur  un"
+1024 DATA "projet commun,  c'est"
+1025 DATA "un miracle,  tout est"
+1026 DATA "possible   finalement"
+1027 DATA "Si  vous voyez  Jaime"
+1028 DATA "Aidez le ! car sachez"
+1029 DATA "qu'un Lannister  paie"
+1030 DATA "toujours  ses  dettes"
+1031 DATA "J'ai  entendu  parler"
+1032 DATA "de cette sorciere par"
+1033 DATA "un  marchand  Dornien"
+1034 DATA "peut-etre y est elle."
+1031 DATA "Allez maintenant !!!!"
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
