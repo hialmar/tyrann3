@@ -47,7 +47,7 @@ void loadTextesPersos()
 	char *ptr;
 	memset(filename, 0, 16);
 	if (ca != 51) {
-		sprintf(filename, "TXPERS9.BIN", ville);
+		sprintf(filename, "TXPERS%d.BIN", ville);
 		ret = DiscLoad(filename);    
 	} else {
 		ret = DiscLoad("TXPERS10.BIN");
