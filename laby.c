@@ -69,6 +69,7 @@ extern unsigned char nb_combat;
 
 extern unsigned char np; // nombre d'ingredients de la potion
 extern unsigned char nf; // nombre de fuites
+extern unsigned char pm; // potion faite
 
 
 extern char io_needed;
@@ -890,6 +891,9 @@ void manageCell(void)
 			printf("debug : C pour combat, autre evite.\n");
 			a = get();
 			if (a == 'c' || a == 'C') {
+				DiscLoad("STARK.BIN");
+				puts("            < ESPACE >");
+				a = get();
 				text();
 				io_needed = 0;
 				saveCharacters();
@@ -926,13 +930,13 @@ void manageCell(void)
 		3140 X=XO:Y=YO
 		3150 RETURN
 		*/
-		if(!TestBit(&dedans, 6)) { // potion
+		if(pm==0) { // potion
 			printf("ET LA POTION ?\n");
 			zap();
-			wait(50);
+			wait(250);
 		} else if(TestBit(&dedans, 7)) { // wall
 			printf("VERS LE NORD DU MUR\n");
-			wait(50);
+			wait(250);
 			text();
 			io_needed = 0;
 			saveCharacters();
@@ -940,7 +944,7 @@ void manageCell(void)
 			SwitchToCommand("DIALOG");
 		} else {
 			printf("PORTE DU NORD CLOSE\n");
-			wait(50);
+			wait(250);
 		}
 	} else {
 		// combats aléatoires ?

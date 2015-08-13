@@ -46,7 +46,7 @@ void loadTextesPersos()
 	char p, pmax, ret, a;
 	char *ptr;
 	memset(filename, 0, 16);
-	if (ca != 51) {
+	if (ca != 51 && ca != 52) {
 		sprintf(filename, "TXPERS%d.BIN", ville);
 		ret = DiscLoad(filename);    
 	} else {
@@ -415,12 +415,13 @@ void main()
 		char i,j,a;
 		unsigned int *seed;
 		backupPageZero();
-		io_needed=1;
+		io_needed=0;
         loadCharacters();
         loadTextesPersos();
         loadNomsImagesPersos();
         DiscLoad("FONT.BIN");
-		//get();
+        printf("v: %d ca: %d, ca-7: %d\n", ville, ca, (ca-7));
+		get();
 		hires();
 		//loadRoutines();
 		if (ca == 7 || ca == 8) {
@@ -472,11 +473,29 @@ void main()
 			loadImage(imagesPersos[9][0]);
 			printf("Je suis Jon Snow\n");
 			// test bit wall
-			if(TestBit(&dedans, 7)) {
-				dialogue(1);
-			} else {
+			if(!TestBit(&dedans, 7)) {
 				dialogue(0);
 				SetBit(&dedans, 7);
+			} else {
+				printf("Je n'ai plus rien a dire.\n");
+				wait(100);
+			}
+		} else if (ville == 9 && ca == 52) {
+			// Jon
+			loadImage(imagesPersos[9][0]);
+			printf("Je suis Jon Snow\n");
+			// test bit wall
+			if(TestBit(&dedans, 7)) {
+				dialogue(1);
+				
+				printf("Generique\n");
+				io_needed = 1;
+				saveCharacters();
+				restorePageZero();
+				SwitchToCommand("!DIR");
+			} else {
+				printf("Je n'ai rien a dire.\n");
+				wait(100);
 			}
 		}
 

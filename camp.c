@@ -32,7 +32,7 @@ extern char io_needed;
 extern char eencre[];
 
 char *classe[] = { "Chevalier","Mercenaire","Ranger","Sorcier","Mestre","Septon" };
-char *etat[] = { "OK", "-Empoi- ", "-Paral- ", ">MORT< " };
+char *etat[] = { "OK", "-Empoi-  ", "-Paral-  ", ">MORT<  " };
 char *maisons[] = { "MARTELL","BARATHEON","TYRELL","GREYJOY","ARRYN","LANNISTER","TULLY","STARK"};
 
 char *sorts[] = { "SOMMEIL","FEU","PIERRE","VENIN","SANG","FOUDRE", "LAVE", "SEISME",
@@ -367,9 +367,9 @@ void inspect(void)
 	// construction du nom/titre
 	strcpy(titre, " < ");
 	strcat(titre, characters[i].nom);
-	if(characters[i].mp != 8) {
+	if(characters[i].mp != 1) {
 		strcat(titre, " ");
-		strcat(titre, maisons[characters[i].mp-1]);
+		strcat(titre, maisons[characters[i].mp-2]);
 	}
 	strcat(titre, " > ");
 	j = strlen(titre);
@@ -492,7 +492,7 @@ void printTeamFull(void)
 		attribAtXY(1,7+3*i,encre);
 		printAtXY (3,7+3*i, itoa(i+1));
 		printAtXY (5,7+3*i, characters[i].nom);		
-		printAtXY (17,7+3*i, maisons[characters[i].mp-1]);		
+		if (characters[i].mp != 1) printAtXY (17,7+3*i, maisons[characters[i].mp-2]);		
 		printAtXY (27,7+3*i, classe[characters[i].cp-1]);
 		printAtXY (37,7+3*i, itoa(characters[i].ni));
 		printAtXY (6,7+3*i+1, itoa(characters[i].ri*10));
