@@ -13,6 +13,8 @@ extern unsigned char y;
 
 extern struct character characters[6];
 
+extern unsigned char ingredients[6]; // ingrédients
+
 extern unsigned char boussole;
 
 extern unsigned char cles[9][4]; // trousseau de clefs (36 octets)
@@ -23,17 +25,23 @@ extern char ca; // case courante
 
 extern unsigned char nb_combat;
 
+extern unsigned char tl; // top level  villes visitables.
+extern unsigned char np; // nombre d'ingredients de la potion
+
 extern char io_needed;
 extern char eencre[];
 
-char *classe[] = { "Chevalier","Paladin","Ranger","Sorcier","Mestre","Septon" };
+char *classe[] = { "Chevalier","Mercenaire","Ranger","Sorcier","Mestre","Septon" };
 char *etat[] = { "OK", "-Empoi- ", "-Paral- ", ">MORT< " };
-char *maisons[] = { "STARK","ARRYN","LANNISTER","TULLY","TYRELL","BARATHEON", "MARTELL"};
+char *maisons[] = { "MARTELL","BARATHEON","TYRELL","GREYJOY","ARRYN","LANNISTER","TULLY","STARK"};
 
 char *sorts[] = { "SOMMEIL","FEU","PIERRE","VENIN","SANG","FOUDRE", "LAVE", "SEISME",
 				  "EAU", "SERUM", "MUSCLE", "BOUCLIER", "ELIXIR", "ECRAN", "VIE", "MORT",
 				  "EPEE-FEU", "FORCE", "CHARME", "VISION", "GLACE", "ILLUSION", "VENT", 
-				  "DRAGONS" };
+				  "DRAGON" };
+				  
+char *nomIngredients[] = { "sangsue royale","fleur de Lys","encre de poulpe","rose du Val","huile du Roc","foie de truite"};
+
 char tentatives = 0; // pour les coffres
 
 void loadTextesItems()
@@ -561,16 +569,66 @@ void chest(void)
 		return;
 	}
 	if(ca==27) {
-		
+		// 
+		// 21700 IF IG(VI-2)=1THEN RETURN
+		// 21708 NP=NP+1:IG(VI-2)=1:S$=IG$(VI-2)
+		// 21710 PRINT@5,10;"IL TROUVE: ";S$
+		// 21720 S$="Nb d'Ingredients Potion:"+STR$(NP):PRINT@5,12;S$
+		// 21730 IF NP=6THENPRINT@5,14;"Direction le Labo pour la potion":GOTO21790
+		// 21740 S$="Encore"+STR$(6-NP)+" a trouver":PRINT@5,14;S$
+		// 21790 L=16:GOSUB 30000
+		// 21800 RETURN
+		if(ville<2 || ville >7) return; // bug
+		if(ingredients[ville-2]) {
+			printAtXY(19,12, "Rien !");
+			wait(150);
+			return;
+		}
+		np++;
+		ingredients[ville-2]=1;
+		printAtXY(19,12, nomIngredients[ville-2]);
+		printAtXY(6,13, "Nb d'Ingredients Potion :");
+		printAtXY(20,13, itoa(np));
+		if(np==6) {
+			printAtXY(6,15, "Direction le Labo pour la potion :");
+		} else {
+			printAtXY(6,15, "Encore ");
+			printAtXY(13,15, itoa(6-np));
+			printAtXY(17,15, "a trouver");	
+		}			
 		ca=0;
+		wait(150);
 		return;
 	}
+	if(ca==28) {
+		// tresor 
+		// 21900 SS=FNA(5000)+3000:RI(P)=RI(P)+SS
+		// 21910 S$="un TRESOR de"+STR$(SS)+" ca"
+		// 21920 TL=TL+1:UP=1
+		// 21950 RETURN
+		int prime = rand()*5000 + 3000;
+		characters[a].ri += prime/10; // attention on stocke les ca / 10
+		printAtXY(19,12, "un TRESOR de");
+		printAtXY(32,15, itoa(prime));
+		printAtXY(38,15, "ca");
+		tl++; // on peut aller a la ville suivante !
+		ca=0;
+		wait(150);
+		return;
+	}
+	
+	// un objet
+	// 21410 SS=FNA(100):IFSS<5ORSS>95THENSS=FNA(5)+43:GOTO21420
+	// 21415 SS=FNA(22)+19:IFSS=40OR(SS>21ANDSS<29)OR(SS>36ANDSS<44)THEN21415
+	// 21420 S$=IT$(SS)
+	
 	ss = rand()%100+1;
 	if(ss<5||ss>95) {
-		ss=rand()%5+49;
+		ss=rand()%5+43;
 	} else {
-		do ss=rand()%22+20;
-		while(ss==40 || (ss>21 && ss<29));
+		do {
+			ss=rand()%22+19;
+		} while(ss==40 || (ss>21 && ss<29) || (ss>36 && ss<44));
 	}
 	printAtXY(19,12, textesItems[ss-1]);
 	wait(150);
@@ -592,6 +650,7 @@ void chest(void)
 void sleep(void)
 {
 /*
+21500 IF VIL>6 THEN ZAP:PRINT@8,9;" TROP DANGEREUX !":WAIT250:RETURN
 21500 CLS:PRINT @10,8;" UNE PETITE SIESTE "
 21510 GOSUB 22000:PRINT @7,10;" VOUS RECUPEREZ VOS SORTS ":WAIT TI*5
 21580 PRINT @10,12;"  BON VOYAGE  ":WAIT TI*5
@@ -607,20 +666,26 @@ void sleep(void)
 22100 RETURN
 */
 	char p,i,max;
-	cls();
-	printAtXY(11,9, "Une petite sieste ");
 	
-	for(p=0;p<6;p++) {
-		if(characters[p].et>0 && characters[p].et<5)
-			characters[p].et+=rand()%3+1;
-		if(characters[p].cp>3) {
-			max = characters[p].ni > 8 ? 8 : characters[p].ni; 
-			for(i=0;i<max;i++)
-				characters[p].sp[i]=rand()%2+3;
-		}
-	}	
-	printAtXY(8,10, "Vous recuperez vos sorts ");
-	wait(150);
+	if(ville>6) {
+		printAtXY(9,10, "Trop dangereux !");
+		wait(250);
+	} else {
+		cls();
+		printAtXY(11,3, "Une petite sieste ");
+	
+		for(p=0;p<6;p++) {
+			if(characters[p].et>0 && characters[p].et<5)
+				characters[p].et+=rand()%3+1;
+			if(characters[p].cp>3) {
+				max = characters[p].ni > 8 ? 8 : characters[p].ni; 
+				for(i=0;i<max;i++)
+					characters[p].sp[i]=rand()%2+3;
+			}
+		}	
+		printAtXY(8,5, "Vous recuperez vos sorts ");
+		wait(150);
+	}
 }	
 			  
 void camping(void)

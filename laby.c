@@ -25,7 +25,7 @@ char g[3]; // cases à gauche
 #define A_FWCYAN	 6
 #define A_FWWHITE	 7
 
-char *classe[] = { "Chevalier","Paladin","Ranger","Sorcier","Mestre","Septon" };
+char *classe[] = { "Chevalier","Mercenaire","Ranger","Sorcier","Mestre","Septon" };
 char *etat[] = { "OK", "-Empoi- ", "-Paral- ", ">MORT< " };
 char *message[] = { "Ouille!","Le mur n'a rien senti","Tu as bu ?" };
 char *portes[] = {"King Robert","Queen Cersei","PRISON","Conseil",
@@ -38,7 +38,7 @@ char *portes[] = {"King Robert","Queen Cersei","PRISON","Conseil",
 	"Lord Brynden","ARMURERIE","PRISON","Cuisines",
 	"Lord Starck","Master Luwin","RANGER","CASTLEBLACK","- SUD -","- NORD -"};
 
-char *maisons[] = { "STARK","ARRYN","LANNISTER","TULLY","GREYJOY","TYRELL","BARATHEON", "MARTELL"};
+char *maisons[] = { "MARTELL","BARATHEON","TYRELL","GREYJOY","ARRYN","LANNISTER","TULLY","STARK"};
 
 extern char textes[];
 extern char * ptTextes;
@@ -66,6 +66,10 @@ extern char ca; // case courante
 extern unsigned char dedans;
 
 extern unsigned char nb_combat;
+
+extern unsigned char np; // nombre d'ingredients de la potion
+extern unsigned char nf; // nombre de fuites
+
 
 extern char io_needed;
 
@@ -913,6 +917,7 @@ void manageCell(void)
 	} else if (ca==52) {
 		DiscLoad("ZWALL2.BIN");
 		/* // A ADAPTER
+		3101 IFPM=0THENPRINT"ET LA POTION ?":ZAP:WAIT50:GOTO3104
 		3102 IF WALL=1THENPRINT"VERS LE NORD DU MUR":GOTO3110
 		3104 PRINT"PORTE DU NORD CLOSE":WAITTI*10:GOTO3140
 		3110 GETA$:IFA$=""THEN3110
@@ -921,9 +926,13 @@ void manageCell(void)
 		3140 X=XO:Y=YO
 		3150 RETURN
 		*/
-		if(TestBit(&dedans, 7)) {
+		if(!TestBit(&dedans, 6)) { // potion
+			printf("ET LA POTION ?\n");
+			zap();
+			wait(50);
+		} else if(TestBit(&dedans, 7)) { // wall
 			printf("VERS LE NORD DU MUR\n");
-			a = get();
+			wait(50);
 			text();
 			io_needed = 0;
 			saveCharacters();
@@ -931,7 +940,7 @@ void manageCell(void)
 			SwitchToCommand("DIALOG");
 		} else {
 			printf("PORTE DU NORD CLOSE\n");
-			a = get();
+			wait(50);
 		}
 	} else {
 		// combats aléatoires ?
@@ -1136,22 +1145,17 @@ void main()
 						}
 					}
 					break;
-				case 'D': // pour debug
-				case 'd':
-					// 400 IF A$=" "AND F(1)>1 AND F(1)<7 THEN GOSUB 3000:GOTO 330
-					if(f[0]>1&&f[0]<7) {
-						f[0]=0;
-						forward();
-						ping();
-					}
-					break;
 				case 'I':
 				case 'i':
+				case 'Z':
+				case 'z':
 					// 410 IF A$="I" OR A$="i" THEN GOSUB 600:GOTO 330
 					forward();
 					break;
 				case 'J':
 				case 'j':
+				case 'Q':
+				case 'q':
 					// 420 IF A$="J" OR A$="j" THEN S=S-1:IF S=0 THEN S=4
 					s--;
 					if(s<0) s=3;
@@ -1159,6 +1163,8 @@ void main()
 					break;
 				case 'L':
 				case 'l':
+				case 'D':
+				case 'd':
 					// 430 IF A$="L" OR A$="l" THEN S=S+1:IF S=5 THEN S=1
 					s++;
 					if(s>3) s=0;

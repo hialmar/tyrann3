@@ -24,9 +24,11 @@ unsigned char ville=0; // ville courante
 
 unsigned char combats_coffres[9][5]; // combats et coffres sous forme de tableaux de bits
 
-unsigned char dedans; // tableau de bits pour gérer le côté des portes et le mur à la fin
+unsigned char dedans; // tableau de bits pour gérer le côté des portes, la potion et le mur à la fin
 
-unsigned char tl; // top level ?  villes visitables.
+unsigned char tl; // top level  villes visitables.
+unsigned char np; // nombre d'ingredients de la potion
+unsigned char nf; // nombre de fuites
 
 char ca = 0; // case courante
 
@@ -172,6 +174,10 @@ void loadCharacters(void)
 		tl=*ptr;
 		ptr++;
 		printf("tl %d\n", tl);
+		np=0; //*ptr;
+		//ptr++;
+		nf=0; //*ptr;
+		//ptr++;
 		printf("longueur %d\n", (int) (ptr - 0xa000));
 	} else {
 		printf("Erreur lors du chargement de %s\n", "TEAM.BIN");
@@ -247,6 +253,10 @@ void saveCharacters(void)
 	*ptr = tl;
 	ptr++;
 	printf("tl %d\n", tl);
+	*ptr = np;
+	ptr++;
+	*ptr = nf;
+	ptr++;
 	printf("fin (%x) longueur %d\n", (unsigned int) ptr, (int) (ptr - 0xa000));
 	if (io_needed) {
 		//restorePageZero();

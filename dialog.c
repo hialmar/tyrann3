@@ -412,7 +412,7 @@ void loadImage(char *image)
 #ifdef NEW_VERSION
 void main()
 {		
-		char j;
+		char i,j,a;
 		unsigned int *seed;
 		backupPageZero();
 		io_needed=1;
@@ -436,12 +436,42 @@ void main()
 			dialogue(ca-7);
 			//P=CA-6:CL(VI,P+1)=1:SS=VI
 			// donne la clé suivante
-			cles[ville-1][ca-6]=1;
-		} else if (ca == 51) {
+			if (cles[ville-1][ca-6]!=1) {
+				cles[ville-1][ca-6]=1;
+			
+				// cadeau Tyrion
+				if(ville == 7 && ca == 7) {
+					// on essaie de donner 2 grégeois
+					char gift = 0;
+					// on cherche un personnage
+					for(a=0;a<6&&gift<2;a++) {
+						// avec un slot de libre
+						for(i=0;i<6&&gift<2;i++) {
+							if (characters[a].sad[i]==0) {
+								characters[a].sad[i]=33; // grégeois
+								gift++;
+							}
+						}
+					}
+					if(gift<2) { // on a pas pu les donner, on donne 1500 ca à la place
+						characters[2].ri += 150; // attention on stocke ca / 10
+					}
+				}
+				
+				// cadeau Jaime
+				if(ville == 8 && ca == 8) {
+					int prime = rand()*5000 + 5000;
+					characters[a].ri += prime/10; // attention on stocke les ca / 10
+					printAtXY(19,12, "un TRESOR de");
+					printAtXY(32,15, itoa(prime));
+					printAtXY(38,15, "ca");
+				}
+			}
+		} else if (ville == 9 && ca == 51) {
 			// Jon
 			loadImage(imagesPersos[9][0]);
 			printf("Je suis Jon Snow\n");
-			// test bit dedans
+			// test bit wall
 			if(TestBit(&dedans, 7)) {
 				dialogue(1);
 			} else {
@@ -526,7 +556,7 @@ void main()
 		hires();
 		loadImage("PORTR19.DAT"); // Cersey
 		dialogue();
-
+		
 		io_needed = 1;
 		saveCharacters();
 		restorePageZero();
