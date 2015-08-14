@@ -101,8 +101,8 @@ char *loadTexts(char *ptr, char *tab[])
 	char t, tmax, longueur;
 	tmax = *ptr; ptr++;
 	//printf("ptTextes : %x\n", (unsigned int)ptTextes);
-	//printf("Nb objets : %d\n", tmax);
 	nbTextes = tmax;
+	//printf("Nb textes : %d\n", tmax);
 	for (t=0; t<tmax; t++) {
 		longueur = *ptr; ptr++;
 		//printf("Longueur texte %d : %d\n", t, longueur);
@@ -114,9 +114,10 @@ char *loadTexts(char *ptr, char *tab[])
 			exit(1);
 		}
 		memcpy(tab[t], ptr, longueur);
-		tab[t][longueur]=0;
+		tab[t][longueur]=' ';
+		tab[t][longueur+1]=0;
 		//printf("Texte %s \n", tab[t]);
-		ptTextes+=longueur+1;
+		ptTextes+=longueur+2;
 		ptr+=longueur;
 	}
 	return ptr;

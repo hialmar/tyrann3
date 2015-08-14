@@ -862,17 +862,17 @@ void manageCell(void)
 	//printf("ca = %d\n", ca);
 	if (ca==7 || ca==8 || ca==51) {
 		// personnage
-		printf("Voila un personnage, dialoguer (O/N) ?\n");
-        a = get();
-        if (a == 'o' || a == 'O') { 
+		//printf("Voila un personnage, dialoguer (O/N) ?\n");
+        //a = get();
+        //if (a == 'o' || a == 'O') { 
 			text();
 			io_needed = 0;
 			saveCharacters();
 			restorePageZero();
 			SwitchToCommand("DIALOG");
-		} else {
-			puts("\n");
-		}
+		//} else {
+		//	puts("\n");
+		//}
 	} else if (ca==99) {
 		printf("        Retour Village (O/N)?\n");
         a = get();
@@ -1064,7 +1064,7 @@ void main()
         		char cas = c[x+y*XMAX];
         		if (cas>=21 && cas<=28) nb = cas - 21;
         		else if (cas >=30 && cas <= 50) nb = cas - 30 + 8; // les 8 premiers bits stockent les coffres
-				if (cas < 32) {
+				if (nb < 40) {
 					SetBit(combats_coffres[ville-1], nb);
 					//printf("Coffre ou Combat %d fini!\n", nb);
 					c[x+y*XMAX] = 0;
@@ -1115,7 +1115,7 @@ void main()
 			a = get();
 			
 			switch(a) {
-				#ifdef debug
+				//#ifdef debug
 				case 'F': // pour debug
 				case 'f':
 					// 390 IF A$="F" THEN END
@@ -1128,7 +1128,7 @@ void main()
 					SwitchToCommand("!DIR"); // évite une erreur bizarre
 					return;
 					break;
-				#endif
+				//#endif
 				case ' ':
 					// 400 IF A$=" "AND F(1)>1 AND F(1)<7 THEN GOSUB 3000:GOTO 330
 					if(f[0]>1&&f[0]<7) {
@@ -1199,7 +1199,7 @@ void main()
 					restorePageZero();
 					SwitchToCommand("CAMP");
 					break;
-				#ifdef debug
+				//#ifdef debug
 				case 'A':
 				case 'a':
 					printf("alea vaut %d\n", rand());
@@ -1218,7 +1218,7 @@ void main()
 					restorePageZero();
 					SwitchToCommand("VILLE");
 					break;
-				#endif
+				//#endif
 				default:
 					;
 			}

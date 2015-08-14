@@ -28,6 +28,10 @@ extern unsigned char nb_combat;
 extern unsigned char tl; // top level  villes visitables.
 extern unsigned char np; // nombre d'ingredients de la potion
 
+extern unsigned char boussole;
+extern unsigned char filet;
+extern unsigned char selle_dragon;
+
 extern char io_needed;
 extern char eencre[];
 
@@ -279,71 +283,75 @@ void spells(char p)
 		printTitle(14,14, A_BGRED, " <ESPACE> ", 10);
 		a = get();
 	} else { // mestre
-		printTitle(7,14, A_BGRED, " Un sort de soin (O/N) ? ", 25);
-		a = get();
-		if (a!='o' && a!='O')
-			return;
-		printAtXY(6,14, "                               ");
-		// affichage équipe
-		printTeam();
-		printAtXY(8,12, "        LEQUEL  ?      ");
-		while(1) {
+		a = 'o';
+		while(a == 'o' || a == 'O') {
+			printTitle(7,14, A_BGRED, " Un sort de soin (O/N) ? ", 25);
 			a = get();
-			if (a<'1' || a>'7' || a=='4' || a=='6') {
-				zap(); // zap si pas correct
-				printAtXY(6,12, "       !IMPOSSIBLE!       ");
-				wait(250);
-				printAtXY(8,12, "        LEQUEL  ?      ");
-			} else {
-				i = a - '1';
-				if(i>=characters[p].ni) {
-					zap(); // pas du bon niveau
+			if (a!='o' && a!='O')
+				return;
+			printAtXY(6,14, "                               ");
+			// affichage équipe
+			printTeam();
+			printAtXY(8,12, "        LEQUEL  ?      ");
+			while(1) {
+				a = get();
+				if (a<'1' || a>'7' || a=='4' || a=='6') {
+					zap(); // zap si pas correct
 					printAtXY(6,12, "       !IMPOSSIBLE!       ");
 					wait(250);
 					printAtXY(8,12, "        LEQUEL  ?      ");
-				} else
-					break; // correct : on sort
-			}
-		}		
-		strcpy(titre, "Incantation de ");
-		strcat(titre, sorts[(characters[p].cp-4)*8+i]);
-		j = strlen(titre);
-		a = (31-j)/2 + 4;
-		printAtXY(a,12, titre);
-		if(i==4) {
-			// soigne tout le monde
-			for(i=0;i<6;i++) {
-				if (characters[i].ok!=4) {
-					characters[i].et=characters[i].pv;
-					characters[i].ok=1;
-				}
-			}
-		} else {
-			printAtXY(7,16, " SOIGNER QUI ? (0:Aucun) ");
-			while(1) {
-				a = get();
-				if (a<'0' || a>'6')
-					ping(); // ping si pas correct
-				else
-					break; // correct : on sort
-			}
-			a = a - '1';
-			if (a>=0) {
-				// soigne a
-				// cas impossibles
-				if((i==0 && characters[a].ok==4) || 
-				   (i==1 && characters[a].ok!=2) ||
-				   (i==2 && characters[a].ok!=3) ||
-				   (i==6 && characters[a].ok!=4)) {
-				    zap();
-				    printAtXY(6,12, "       !IMPOSSIBLE!       ");
-				    wait(250);
 				} else {
-					// ça marche
-					characters[a].et=characters[a].pv;
-					if(i!=0) characters[a].ok=1;
+					i = a - '1';
+					if(i>=characters[p].ni) {
+						zap(); // pas du bon niveau
+						printAtXY(6,12, "       !IMPOSSIBLE!       ");
+						wait(250);
+						printAtXY(8,12, "        LEQUEL  ?      ");
+					} else
+						break; // correct : on sort
+				}
+			}		
+			strcpy(titre, "Incantation de ");
+			strcat(titre, sorts[(characters[p].cp-4)*8+i]);
+			j = strlen(titre);
+			a = (31-j)/2 + 4;
+			printAtXY(a,12, titre);
+			if(i==4) {
+				// soigne tout le monde
+				for(i=0;i<6;i++) {
+					if (characters[i].ok!=4) {
+						characters[i].et=characters[i].pv;
+						characters[i].ok=1;
+					}
+				}
+			} else {
+				printAtXY(7,16, " SOIGNER QUI ? (0:Aucun) ");
+				while(1) {
+					a = get();
+					if (a<'0' || a>'6')
+						ping(); // ping si pas correct
+					else
+						break; // correct : on sort
+				}
+				a = a - '1';
+				if (a>=0) {
+					// soigne a
+					// cas impossibles
+					if((i==0 && characters[a].ok==4) || 
+					   (i==1 && characters[a].ok!=2) ||
+					   (i==2 && characters[a].ok!=3) ||
+					   (i==6 && characters[a].ok!=4)) {
+						zap();
+						printAtXY(6,12, "       !IMPOSSIBLE!       ");
+						wait(250);
+					} else {
+						// ça marche
+						characters[a].et=characters[a].pv;
+						if(i!=0) characters[a].ok=1;
+					}
 				}
 			}
+			a='o';
 		}
 	}
 }
@@ -631,6 +639,8 @@ void chest(void)
 		} while(ss==40 || (ss>21 && ss<29) || (ss>36 && ss<44));
 	}
 	printAtXY(19,12, textesItems[ss-1]);
+	if(ss == 36) selle_dragon = 1;
+	if(ss == 35) boussole = 1;
 	wait(150);
 	if(characters[a].sad[5]>0) {
 		zap();

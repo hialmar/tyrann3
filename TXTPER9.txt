@@ -1,11 +1,11 @@
 
 10 TEXT:CLS:PAPER0:INK6
-30 DIM TPERSO$(2,15)
+30 DIM TPERSO$(2,16)
 35 O1=#A000
 36 POKEO1,2
 40 FOR P=1TO2
-45  O1=O1+1:POKEO1,15
-50  FOR X=1TO15
+45  O1=O1+1:POKEO1,16
+50  FOR X=1TO16
 60   READ TP$(P,X):PRINT TP$(P,X)
 61   LG=LEN(TP$(P,X))
 62   O1=O1+1:POKEO1,LG
@@ -19,7 +19,7 @@
 95 SAVEO "TXPERS9.BIN",A#A000,EO1
 100 PING:ZAP:END
 
-10000 REM TEXTES DE NED, LUWIN
+10000 REM TEXTS NED, LUWIN
 10001 DATA "BONJOUR NOBLE EQUIPE"
 10002 DATA "La garde de nuit si-"
 10003 DATA "gnale des anomalies:"
@@ -61,7 +61,7 @@
 13002 DATA "la transformation des morts en   "
 13003 DATA "marcheurs blancs. Ca peut sembler"
 13004 DATA "Inutile, mais en cas de combat   "
-13005 DATA "Ca empechera nos morts de se re- "
+13005 DATA "Áa empechera nos morts de se re- "
 13006 DATA "tourner contre nous. C est donc  "
 13007 DATA "vital pour la Garde de Nuit qui  "
 13008 DATA "est en premiere ligne. Je vous   "
@@ -81,21 +81,4 @@
 11009 DATA "car les dangers que vous avez vecu"
 11010 DATA "ne sont que des broutilles !!     "
 11011 DATA "Bonne chance et Winter is coming "
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
