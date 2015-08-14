@@ -43,8 +43,8 @@
 1105 DATA "ma potion ? je serai"
 1106 DATA "enfin reconnue, donc"
 1107 DATA "Les 6 ingredients:  "
-1108 DATA " 1 - venin de vipere"'Dorne
-1109 DATA " 2 - Fleur de Lys   "'Highgarden
+1108 DATA " 1 - sangsue royale "'Storm's end
+1109 DATA " 2 - fleur de Lys   "'Highgarden
 1110 DATA " 3 - encre de poulpe"'Pike
 1111 DATA " 4 - rose du Val    "'Val d'Arryn
 1112 DATA " 5 - huile du Roc   "'Castraly roc

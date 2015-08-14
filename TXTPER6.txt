@@ -23,7 +23,7 @@
 210 REM Petyr Baelish, Sansa Starck
 
 1001 DATA " * BIENVENUE au * "
-1002 DATA "Val d'Arryn,  Erye"
+1002 DATA "Val d'Arryn, Eyrie"
 1003 DATA "vous  voila  enfin"
 1004 DATA "Et cette  potion ?"
 1005 DATA "le Val  est  riche"

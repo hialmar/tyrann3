@@ -4,8 +4,8 @@
 35 O1=#A000
 36 POKEO1,2
 40 FOR P=1TO2
-45  O1=O1+1:POKEO1,16
-50  FOR X=1TO16
+45  O1=O1+1:POKEO1,15
+50  FOR X=1TO15
 60   READ TP$(P,X):PRINT TP$(P,X)
 61   LG=LEN(TP$(P,X))
 62   O1=O1+1:POKEO1,LG
@@ -61,7 +61,7 @@
 13002 DATA "la transformation des morts en   "
 13003 DATA "marcheurs blancs. Ca peut sembler"
 13004 DATA "Inutile, mais en cas de combat   "
-13005 DATA "Áa empechera nos morts de se re- "
+13005 DATA "Ca empechera nos morts de se re- "
 13006 DATA "tourner contre nous. C est donc  "
 13007 DATA "vital pour la Garde de Nuit qui  "
 13008 DATA "est en premiere ligne. Je vous   "

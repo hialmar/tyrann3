@@ -230,7 +230,7 @@
 2470 FORI=1TO6:O1=O1+1:POKEO1,IG(I):NEXT' tableau des 6 ingrédients de la potion
 2475 FOR V=1TO9:FORM=1TO5:O1=O1+1:POKEO1,0:NEXT M,V' tableau coffres et combats à 0
 2480 O1=O1+1:POKEO1,0'DEdans (portes speciales franchies ou pas - bits 0-3) + Potion Magique (bit 6) + Wall (bit 7)
-2481 O1=O1+1:POKEO1,0'TL = Team Level
+2481 O1=O1+1:POKEO1,1'TL = Team Level
 2482 O1=O1+1:POKEO1,0'NP = Nombre d'ingredients de la Potion (NI utilise pour Items)
 2483 O1=O1+1:POKEO1,0'NF = Nombre de fuites
 2484 O1=O1+1:POKEO1,0'PM = Potion faite

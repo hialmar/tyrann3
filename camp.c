@@ -527,6 +527,7 @@ void printTeamFull(void)
 void chest(void)
 {
 	char a,i,dff,ss;
+	char borne_sup, borne_inf;
 	cls();
 	printTitle(4,6, A_BGRED, "Voila un coffre, Qui l'ouvre ? ", 31);
 	printTeam();
@@ -564,19 +565,17 @@ void chest(void)
 	printAtXY(6,12, "Il trouve : ");
 	if(ca==21) {
 		cles[ville-1][0]=1;
-		printAtXY(19,12, "Une clef en fer"); // clé 1
+		printAtXY(20,12, "Une clef en fer"); // clé 1
 		wait(150);
 		ca=0;
 		return;
-	}
-	if(ca==26) {
+	} else if(ca==26) {
 		cles[ville-1][3]=1;
-		printAtXY(19,12, "Une clef en or"); // clé 4 (prison)
+		printAtXY(20,12, "Une clef en or"); // clé 4 (prison)
 		wait(150);
 		ca=0;
 		return;
-	}
-	if(ca==27) {
+	} else if(ca==27) {
 		// 
 		// 21700 IF IG(VI-2)=1THEN RETURN
 		// 21708 NP=NP+1:IG(VI-2)=1:S$=IG$(VI-2)
@@ -588,13 +587,13 @@ void chest(void)
 		// 21800 RETURN
 		if(ville<2 || ville >7) return; // bug
 		if(ingredients[ville-2]) {
-			printAtXY(19,12, "Rien !");
+			printAtXY(20,12, "Rien !");
 			wait(150);
 			return;
 		}
 		np++;
 		ingredients[ville-2]=1;
-		printAtXY(19,12, nomIngredients[ville-2]);
+		printAtXY(20,12, nomIngredients[ville-2]);
 		printAtXY(6,13, "Nb d'Ingredients Potion :");
 		printAtXY(20,13, itoa(np));
 		if(np==6) {
@@ -607,17 +606,16 @@ void chest(void)
 		ca=0;
 		wait(150);
 		return;
-	}
-	if(ca==28) {
+	} else if(ca==28) {
 		// tresor 
 		// 21900 SS=FNA(5000)+3000:RI(P)=RI(P)+SS
 		// 21910 S$="un TRESOR de"+STR$(SS)+" ca"
 		// 21920 TL=TL+1:UP=1
 		// 21950 RETURN
-		int prime = rand()*5000 + 3000;
+		int prime = rand()%5000 + 3000;
 		characters[a].ri += prime/10; // attention on stocke les ca / 10
-		printAtXY(19,12, "un TRESOR de");
-		printAtXY(32,15, itoa(prime));
+		printAtXY(20,12, "un TRESOR de");
+		printAtXY(33,15, itoa(prime));
 		printAtXY(38,15, "ca");
 		tl++; // on peut aller a la ville suivante !
 		ca=0;
@@ -638,9 +636,11 @@ void chest(void)
 			ss=rand()%22+19;
 		} while(ss==40 || (ss>21 && ss<29) || (ss>36 && ss<44));
 	}
+	
+	// test 1
+	// à faire TODO :::: ss = 35;
+	
 	printAtXY(19,12, textesItems[ss-1]);
-	if(ss == 36) selle_dragon = 1;
-	if(ss == 35) boussole = 1;
 	wait(150);
 	if(characters[a].sad[5]>0) {
 		zap();
@@ -648,10 +648,42 @@ void chest(void)
 		wait(150);
 		return;
 	}
+	
+	if(ss == 36 || ss == 35) { // selle de dragon ou boussole
+		// on essai de les donner à quelqu'un qui pourra s'en servir
+		char j;
+		
+		for(j=0;j<6;j++) {
+			if(ss == 35 && characters[j].cp<5) // il ne peut pas utiliser la boussole
+				continue;
+			if(ss == 36 && characters[j].cp!=6) // il ne peut pas utiliser la selle
+				continue;
+			// on a trouvé quelqu'un qui pourra utiliser l'objet
+			// peut on ranger l'objet
+			for(i=0;i<6;i++) {
+				if (characters[j].sad[i]==0) {
+					// on a trouvé de la place
+					characters[j].sad[i]=ss;
+					// on positionne les booléens
+					if (ss == 35) boussole = 1;
+					else if (ss == 36) selle_dragon = 1;
+					// le coffre est désormais vide
+					ca=0;
+					// on arrête tout
+					return;
+				}
+			}
+		}
+	}
+	
+	// on range l'objet dans l'inventaire de celui qui l'a trouvé
 	for(i=0;i<6;i++) {
 		if (characters[a].sad[i]==0) {
+			// il y a de la place ici
 			characters[a].sad[i]=ss;
+			// le coffre est désormais vide
 			ca=0;
+			// on arrête tout
 			return;
 		}
 	}

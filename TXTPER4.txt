@@ -5,7 +5,7 @@
 36 POKEO1,2
 40 FOR P=1TO2
 45  O1=O1+1:POKEO1,15
-50  FOR X=1T015
+50  FOR X=1TO15
 60   READ TP$(P,X):PRINT TP$(P,X)
 61   LG=LEN(TP$(P,X))
 62   O1=O1+1:POKEO1,LG
@@ -20,7 +20,7 @@
 100 PING:ZAP:END
 
 200 REM TEXTES DE LORAS,...
-1001 DATA "Ici cest HIGHGARDEN"
+1001 DATA "Voila   HIGHGARDEN"
 1002 DATA "C'est  un  paradis"
 1003 DATA "laissez  moi  vous"
 1004 DATA "montrer nos tresors"
@@ -43,13 +43,13 @@
 1105 DATA "soutenue par  tout"
 1106 DATA "Westeros, aussi je"
 1107 DATA "vous donne la fleur"
-1108 DATA "de Lys du Bief"
+1108 DATA "de Lys royale"
 1109 DATA "Allez dans la salle"
 1110 DATA "des coffres, voici"
 1111 DATA "la clef.  Merci de"
-1112 DATA "saluez  Lady Sansa"
-1113 DATA "Qui vit a Arryn en"
-1114 DATA "Eyrie je crois...."
+1112 DATA "saluer  Lady Sansa"
+1113 DATA "Qui vit dans le VAL"
+1114 DATA "a Arryn je crois...."
 1115 DATA "Dieu vous aide <.>"
 
 

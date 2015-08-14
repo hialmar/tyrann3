@@ -45,13 +45,13 @@
 1026 DATA "de lui obeir.Vous"
 1027 DATA "cherchez le 'sang"
 1028 DATA "maudit',  je vous"
-1029 DATA "l'offre... Puisse"
-1030 DATA "la lumiere divine"
-1031 DATA "eclairer le sombre"
-1032 DATA "chemin  que  vous"
-1033 DATA "aller prendre.vous"
-1034 DATA "en  aurez  besoin"
-1035 DATA "Allez en paix   >"
+1029 DATA "offre la clef du "
+1030 DATA "vivarium,elle est"
+1031 DATA "ds  un coffre ici"
+1032 DATA "Puisse le Dieu de"
+1033 DATA "lumiere  guider  "
+1034 DATA "vos pas, vous en "
+1035 DATA "aurez  besoin..."
 
 
 
