@@ -30,15 +30,15 @@ extern char eencre[];
 
 unsigned char coteTexte = 0; // 0 : droite ; 1 : gauche 
 
-char *portes[] = {"King Robert","Queen Cersei","PRISON","Conseil",
-	"Prince Oberyn","Laboratory","PRISON","CELLIER",
-	"Lord Stannis","Melisandre","PRISON","VIVARIUM",
-	"Sir Loras","Lady MAERGERY","PRISON","COFFRES",
-	"Asha Greyjoy","Theon Greyjoy","PRISON","CELLIER",
-	"Petyr","Lady Sansa","SKY CELL","MOON DOOR",
-	"Lord Tyrion","Lord Tywin","PRISON","CHAPELLE",
-	"Lord Brynden","ARMURERIE","PRISON","Cuisines",
-	"Lord Starck","Master Luwin","RANGER","CASTLEBLACK","- SUD -","- NORD -"};
+char *persos[] = {"King Robert","Queen Cersei",
+	"Prince Oberyn","La Sorci}re",
+	"Lord Stannis","Melisandre",
+	"Sir Loras","Lady Margaery",
+	"Asha Greyjoy","Theon Greyjoy",
+	"Petyr","Lady Sansa",
+	"Lord Tyrion","Lord Tywin",
+	"Lord Brynden","Jaime Lannister",
+	"Lord Starck","Master Luwin"};
 
 void loadTextesPersos()
 {
@@ -419,25 +419,17 @@ void main()
         loadCharacters();
         loadTextesPersos();
         loadNomsImagesPersos();
-        DiscLoad("FONT.BIN");
-        printf("v: %d ca: %d, ca-7: %d\n", ville, ca, (ca-7));
-		get();
+        //DiscLoad("FONT.BIN");
+        //printf("v: %d ca: %d, ca-7: %d\n", ville, ca, (ca-7));
+		//get();
 		hires();
 		//loadRoutines();
 		if (ca == 7 || ca == 8) {
-			//printf("v: %d ca: %d, ca-7: %d\n", ville, ca, (ca-7));
-			//get();
-			//puts(imagesPersos[ville-1][ca-7]);
-			//get();
 			loadImage(imagesPersos[ville-1][ca-7]);
-			if(ville==2 && ca == 8)
-				printf("Je suis la sorci}re\n");
-			else
-				printf("Je suis %s\n", portes[(ville-1)*4+(ca-7)]);
-			dialogue(ca-7);
-			//P=CA-6:CL(VI,P+1)=1:SS=VI
+			printf("Je suis %s\n", persos[(ville-1)*2+(ca-7)]);
 			// donne la clé suivante
 			if (cles[ville-1][ca-6]!=1) {
+				dialogue(ca-7);
 				cles[ville-1][ca-6]=1;
 			
 				// cadeau Tyrion
@@ -461,12 +453,19 @@ void main()
 				
 				// cadeau Jaime
 				if(ville == 8 && ca == 8) {
-					int prime = rand()*5000 + 5000;
-					characters[a].ri += prime/10; // attention on stocke les ca / 10
-					printAtXY(19,12, "un TRESOR de");
-					printAtXY(32,15, itoa(prime));
-					printAtXY(38,15, "ca");
+					int prime;
+					int perso;
+					unsigned int *seed = (unsigned int *) 630; // timer
+					srand(*seed);
+					perso = rand()%6;
+					prime = rand()%5000 + 5000;
+					characters[perso].ri += prime/10; // attention on stocke les ca / 10
+					printf("Jaime donne %d ca a %s.", prime, characters[perso].nom);
+					wait(500);
 				}
+			} else {
+				printf("Je n'ai plus rien a dire.\n");
+				wait(500);
 			}
 		} else if (ville == 9 && ca == 51) {
 			// Jon
@@ -478,7 +477,7 @@ void main()
 				SetBit(&dedans, 7);
 			} else {
 				printf("Je n'ai plus rien a dire.\n");
-				wait(100);
+				wait(500);
 			}
 		} else if (ville == 9 && ca == 52) {
 			// Jon
@@ -488,14 +487,12 @@ void main()
 			if(TestBit(&dedans, 7)) {
 				dialogue(1);
 				
-				printf("Generique\n");
-				io_needed = 1;
-				saveCharacters();
+				//printf("Generique\n");
 				restorePageZero();
-				SwitchToCommand("!DIR");
+				SwitchToCommand("GENERIC");
 			} else {
 				printf("Je n'ai rien a dire.\n");
-				wait(100);
+				wait(500);
 			}
 		}
 

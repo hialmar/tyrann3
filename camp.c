@@ -58,12 +58,12 @@ void loadTextesItems()
 		ptr = (char*)0xa000;
 		//printf("Nb NPC : %d\n", pmax);
 		loadTexts(ptr, textesItems);
-		//#ifdef debug
+		#ifdef debug
 		printf("Fin des textes, on utilise %d caracteres sur %d\n", 
 			(ptTextes-textes), TMAX);
 		puts("taper sur une touche pour continuer\n");
         a = (char)getchar();
-        //#endif
+        #endif
 	}
 }
 

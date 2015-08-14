@@ -1,5 +1,5 @@
 1  REM {+++++++ ORIC - TYRANN 3 - janvier 2014 +++++++++++}
-5  PAPER0:INK7:HIRES:LOAD"ZINTRO.BIN":POKE 48035,0
+5  PAPER0:INK7:LOAD "FONT.BIN":HIRES:LOAD"ZINTRO.BIN":POKE 48035,0
 10 POKE#26A,PEEK(#26A) AND 254 'Vire le curseur
 13 PRINT:PRINT SPC(9);" TYRANN 3 - ORIC 2015 "
 15 WAIT500:PRINT SPC(14);" < ESPACE >"
@@ -284,7 +284,8 @@
 20020 D2=FNA(D):PRINT "D2:";D2;" = ";D1+D2
 20220 RETURN
 
-30000 PRINT "Une sauvegarde existe. Voulez-vous continuer le jeu ? (O/N)"
+30000 PRINT "Une sauvegarde existe."
+30005 PRINT "Voulez-vous continuer le jeu ? (O/N)"
 30010 GETA$:IF A$<>"O" AND A$<>"o" THEN 305
 30020 LOAD "VILLE"
 

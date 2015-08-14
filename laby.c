@@ -28,15 +28,15 @@ char g[3]; // cases à gauche
 char *classe[] = { "Chevalier","Mercenaire","Ranger","Sorcier","Mestre","Septon" };
 char *etat[] = { "OK", "-Empoi- ", "-Paral- ", ">MORT< " };
 char *message[] = { "Ouille!","Le mur n'a rien senti","Tu as bu ?" };
-char *portes[] = {"King Robert","Queen Cersei","PRISON","Conseil",
-	"Prince Oberyn","Laboratory","PRISON","CELLIER",
-	"Lord Stannis","Melisandre","PRISON","VIVARIUM",
-	"Sir Loras","Lady MAERGERY","PRISON","COFFRES",
-	"Asha Greyjoy","Theon Greyjoy","PRISON","CELLIER",
-	"Petyr","Lady Sansa","SKY CELL","MOON DOOR",
-	"Lord Tyrion","Lord Tywin","PRISON","CHAPELLE",
-	"Lord Brynden","ARMURERIE","PRISON","Cuisines",
-	"Lord Starck","Master Luwin","RANGER","CASTLEBLACK","- SUD -","- NORD -"};
+char *portes[] = {"King Robert","Queen Cersei","Prison","Conseil",
+	"Prince Oberyn","Laboratoire","Prison","Cellier",
+	"Lord Stannis","Melisandre","Prison","Vivarium",
+	"Sir Loras","Lady Margaery","Prison","Coffres",
+	"Asha Greyjoy","Theon Greyjoy","Prison","Cellier",
+	"Petyr","Lady Sansa","Sky Cell","Moon Door",
+	"Lord Tyrion","Lord Tywin","Prison","Chapelle",
+	"Lord Brynden","Porcherie","Prison","Cuisines",
+	"Lord Starck","Master Luwin","Ranger","CastleBlack","- Sud -","- Nord -"};
 
 char *maisons[] = { "MARTELL","BARATHEON","TYRELL","GREYJOY","ARRYN","LANNISTER","TULLY","STARK"};
 
@@ -111,7 +111,7 @@ void loadLaby()
 		default:
 			return;
 	}
-	printf("Chargement de %s\n", filename);
+	//printf("Chargement de %s\n", filename);
     ret = DiscLoad(filename);        
     //printf("Retour %d\n", ret);       
 	if (ret==0) {
@@ -669,14 +669,14 @@ void drawLaby(void)
 						if(f[l]>2 && f[l]<7) {
 							unsigned char p,i,t;
 							char *texte;
-							if(f[l]==5) {
+							if(f[l]==5 || f[l]==6) {
 								char g=105,nb=5,h=35,br=25;
 								p=3;
 								
 								// Grille
-								// New version Max
-								if(ville==9) {
-									nb=7;g=96;br=75;h=35;
+								// New version Max DEBUG
+								if(ville==9 && f[l]==6) {
+									nb=7;g=96;br=75;h=53;
 								}
 								CurrentPixelX=g;
 								CurrentPixelY=75;
@@ -727,8 +727,8 @@ void drawLaby(void)
 							texte = portes[t];
 							lg = strlen(texte);
 							t=124-lg*3;
-							printf("v: %d, f[l]: %d, ind: %d, lg: %d, t:%d\n",
-								ville, f[l], (f[l]-3), lg, t);
+							//printf("v:%d,f[l]:%d,i:%d,lg:%d,t:%d,de:%x\n",
+							//	ville, f[l], (f[l]-3), lg, t, dedans);
 							for(i=0;i<lg;i++) {
 								curset(t,65,3);
 								hchar(texte[i],0,1);
@@ -842,6 +842,7 @@ void drawLaby(void)
 	}
 }
 
+/*
 unsigned char findCombatChestNumber() {
 	unsigned char combatChestNumber = 0;
 	int i;
@@ -852,6 +853,7 @@ unsigned char findCombatChestNumber() {
 	}
 	return combatChestNumber;
 }
+*/
 
 void manageCell(void)
 {
@@ -868,6 +870,8 @@ void manageCell(void)
 			saveCharacters();
 			restorePageZero();
 			SwitchToCommand("DIALOG");
+		} else {
+			puts("\n");
 		}
 	} else if (ca==99) {
 		printf("        Retour Village (O/N)?\n");
@@ -880,17 +884,20 @@ void manageCell(void)
 			saveCharacters();
 			restorePageZero();
         	SwitchToCommand("VILLE");
+		} else {
+			puts("\n");
 		}
-	} else if (ca >=30 && ca <=51) {
+	} else if (ca >=30 && ca <= 50) {
 		// combats_coffres[ville-1]
 		// si le combat n'a pas été déjà fini
-		unsigned char nb = findCombatChestNumber();
+		unsigned char nb = ca - 30 + 8; // les 8 premiers bits stockent les coffres
 		if(!TestBit(combats_coffres[ville-1], nb)) {
-			printf("Combat %d ", ca);
-			printf("Combat %d non fini!\n", nb);
-			printf("debug : C pour combat, autre evite.\n");
-			a = get();
-			if (a == 'c' || a == 'C') {
+			printf("Combat !", ca);
+			wait(300);
+			//printf("Combat %d non fini!\n", nb);
+			//printf("debug : C pour combat, autre evite.\n");
+			//a = get();
+			//if (a == 'c' || a == 'C') {
 				DiscLoad("STARK.BIN");
 				puts("            < ESPACE >");
 				a = get();
@@ -899,24 +906,25 @@ void manageCell(void)
 				saveCharacters();
 				restorePageZero();
 				SwitchToCommand("COMBAT");
-			}
+			//}
 		}
 	// coffres
-	} else if (ca>20 && ca<29) {
+	} else if (ca>=21 && ca<=28) {
 		// si le coffre n'a pas été déjà ouvert
-		unsigned char nb = findCombatChestNumber();
+		unsigned char nb = ca - 21;
 		if(!TestBit(combats_coffres[ville-1], nb)) {
-			printf("Coffre %d ", ca);
-			printf("Coffre %d non fini!\n", nb);
-			printf("debug : C pour camp, autre evite.\n");
-			a = get();
-			if (a == 'c' || a == 'C') {
+			printf("Vous trouvez un coffre !", ca);
+			wait(300);
+			//printf("Coffre %d non fini!\n", nb);
+			//printf("debug : C pour camp, autre evite.\n");
+			//a = get();
+			//if (a == 'c' || a == 'C') {
 				text();
 				io_needed = 1;
 				saveCharacters();
 				restorePageZero();
 				SwitchToCommand("CAMP");
-			}
+			//}
 		}
 	} else if (ca==52) {
 		DiscLoad("ZWALL2.BIN");
@@ -931,11 +939,11 @@ void manageCell(void)
 		3150 RETURN
 		*/
 		if(pm==0) { // potion
-			printf("ET LA POTION ?\n");
+			printf("      ET LA POTION ?\n");
 			zap();
-			wait(250);
+			wait(400);
 		} else if(TestBit(&dedans, 7)) { // wall
-			printf("VERS LE NORD DU MUR\n");
+			printf("      VERS LE NORD DU MUR\n");
 			wait(250);
 			text();
 			io_needed = 0;
@@ -943,8 +951,8 @@ void manageCell(void)
 			restorePageZero();
 			SwitchToCommand("DIALOG");
 		} else {
-			printf("PORTE DU NORD CLOSE\n");
-			wait(250);
+			printf("     PORTE DU NORD CLOSE\n");
+			wait(400);
 		}
 	} else {
 		// combats aléatoires ?
@@ -1027,7 +1035,7 @@ void main()
 		unsigned int *seed;
 		backupPageZero();
         GenerateTables();
-
+		DiscLoad("FONT.BIN");
         // testing
         
         //sedoric("!LOAD(\"TEAM.BIN\")");
@@ -1051,14 +1059,20 @@ void main()
         loadLaby();
         if (ca==0) {
         	if (c[x+y*XMAX] != 0) {
+        		unsigned char nb = 255;
         		// un coffre ou un combat a été fini
-				unsigned char nb = findCombatChestNumber();
-				SetBit(combats_coffres[ville-1], nb);
-				printf("Coffre ou Combat %d fini!\n", nb);
-				c[x+y*XMAX] = 0;
+        		char cas = c[x+y*XMAX];
+        		if (cas>=21 && cas<=28) nb = cas - 21;
+        		else if (cas >=30 && cas <= 50) nb = cas - 30 + 8; // les 8 premiers bits stockent les coffres
+				if (cas < 32) {
+					SetBit(combats_coffres[ville-1], nb);
+					//printf("Coffre ou Combat %d fini!\n", nb);
+					c[x+y*XMAX] = 0;
+				}
         	}
         }
         
+        #ifdef debug
         for (a=0; a<8; a++)
         	for (j=0; j<40; j++)
 				if(TestBit(combats_coffres[a], j))
@@ -1066,10 +1080,10 @@ void main()
         
         // testing
         // SetBit(combats_coffres[ville-1], 0);
-        //#ifdef debug
-        printf("taper sur une touche pour continuer\n");
-        a = (char)getchar();
-        //#endif
+        #endif
+        
+        printf("Taper sur une touche pour continuer\n");
+        get();
 		
 		seed = (unsigned int *) 630; // timer
 		srand(*seed);
@@ -1097,10 +1111,11 @@ void main()
 						
 			// 380 GET A$
 			//a = (char)getchar();
-			printf("x=%d, y=%d, s=%d ca=%d\n", x,y,s,ca);
+			//printf("x=%d, y=%d, s=%d ca=%d\n", x,y,s,ca);
 			a = get();
 			
 			switch(a) {
+				#ifdef debug
 				case 'F': // pour debug
 				case 'f':
 					// 390 IF A$="F" THEN END
@@ -1113,6 +1128,7 @@ void main()
 					SwitchToCommand("!DIR"); // évite une erreur bizarre
 					return;
 					break;
+				#endif
 				case ' ':
 					// 400 IF A$=" "AND F(1)>1 AND F(1)<7 THEN GOSUB 3000:GOTO 330
 					if(f[0]>1&&f[0]<7) {
@@ -1183,6 +1199,7 @@ void main()
 					restorePageZero();
 					SwitchToCommand("CAMP");
 					break;
+				#ifdef debug
 				case 'A':
 				case 'a':
 					printf("alea vaut %d\n", rand());
@@ -1190,7 +1207,7 @@ void main()
 				case 'K':
 				case 'k':					
 					for (j=0;j<4;j++) {	
-						cles[3][j] = !cles[3][j];
+						cles[ville-1][j] = !cles[ville-1][j];
 					}
 					break;
 				case 'V':
@@ -1201,6 +1218,7 @@ void main()
 					restorePageZero();
 					SwitchToCommand("VILLE");
 					break;
+				#endif
 				default:
 					;
 			}

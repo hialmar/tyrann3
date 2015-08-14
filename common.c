@@ -62,7 +62,7 @@ void backupPageZero()
 	// backup some page 0 important data
 	memcpy(save_zero, (char*)0x84, 7);
 	memcpy(save_zero2, (char*)0x00, 4);
-	printf("SP was %d\n", SPStorage);
+	//printf("SP was %d\n", SPStorage);
 }
 
 void restorePageZero()

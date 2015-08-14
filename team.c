@@ -49,6 +49,9 @@ void loadCharacters(void)
 	char *ptr;
 	unsigned char version;
 	// 48000 PRINT SPC(9);"Veuillez Patienter..."
+	// POKE 48035,0:POKE#26A,PEEK(#26A)AND254
+	poke(48035,0);
+	poke(0x26a,peek(0x26a)&254);
 	puts("         Veuillez Patienter...\n");	
 	// 48005 CLOAD"TEAM"
 	if (io_needed) {
@@ -69,7 +72,7 @@ void loadCharacters(void)
 		s = *ptr; ptr++;
 		ca = *ptr; ptr++;
 		ville = *ptr; ptr++;
-		printf("x=%d y=%d s=%d ca=%d ville=%d\n", x, y, s, ca, ville);
+		//printf("x=%d y=%d s=%d ca=%d ville=%d\n", x, y, s, ca, ville);
 		// test
 		if (x==0 || x > 100) {
 			x = 2; y = 2; s = 1; ville = 4;
@@ -174,16 +177,16 @@ void loadCharacters(void)
 		ptr++;
 		tl=*ptr;
 		ptr++;
-		printf("tl %d\n", tl);
+		//printf("tl %d\n", tl);
 		np=*ptr;
 		ptr++;
 		nf=*ptr;
 		ptr++;
 		pm=*ptr;
 		ptr++;
-		printf("longueur %d\n", (int) (ptr - 0xa000));
+		//printf("longueur %d\n", (int) (ptr - 0xa000));
 	} else {
-		printf("Erreur lors du chargement de %s\n", "TEAM.BIN");
+		printf("Erreur lors du chargement de TEAM.BIN\n");
 		exit(1);
 	}
 }
@@ -255,14 +258,14 @@ void saveCharacters(void)
 	ptr++;
 	*ptr = tl;
 	ptr++;
-	printf("tl %d\n", tl);
+	//printf("tl %d\n", tl);
 	*ptr = np;
 	ptr++;
 	*ptr = nf;
 	ptr++;
 	*ptr = pm;
 	ptr++;
-	printf("fin (%x) longueur %d\n", (unsigned int) ptr, (int) (ptr - 0xa000));
+	//printf("fin (%x) longueur %d\n", (unsigned int) ptr, (int) (ptr - 0xa000));
 	if (io_needed) {
 		//restorePageZero();
 		// 49390 PING:CSAVE "TEAM",A#A000,EO1
