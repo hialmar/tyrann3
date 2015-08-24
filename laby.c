@@ -441,7 +441,7 @@ void drawLaby(void)
 					OtherPixelY=75+10+40+10;
 					DrawLine8();
 					// 2020 IF D(2)>0 AND D(2)<7 THEN GOTO 2050
-					if(!(d[1]>0 && d[1])) {
+					if(!(d[1]>0 && d[1]<7)) {
 						char t;
 						// 2030 IF D(1)=0 OR D(1)>6 THEN T=45 ELSE T=25
 						if(d[0]==0 || d[0]>6) t=45;
@@ -1146,6 +1146,11 @@ void main()
 							f[0]=0;
 							forward();
 							ping();
+							// on avance deux fois
+							prep();
+							drawLaby();
+							forward();
+							printf("On entre dans la pi}ce\n");
 						} else {
 							////// MODIF Maximus *******
 							if(cles[ville-1][f[0]-3]==0) {
@@ -1161,6 +1166,11 @@ void main()
 								f[0]=0;
 								forward();
 								ping();
+								// on avance deux fois
+								prep();
+								drawLaby();
+								forward();
+								printf("On entre dans la pi}ce\n");
 							}
 						}
 					}

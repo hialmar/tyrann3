@@ -98,6 +98,8 @@ void printTeam(void)
 				encre = A_FWGREEN; // bleu		
 		}
 		if (characters[i].ok==4) encre = A_FWRED;
+		// efface la ligne précédente
+		printAtXY (2,21+i, "                                     ");
 		attribAtXY(1,21+i,encre);
 		printAtXY (2,21+i, itoa(i+1));
 		printAtXY (4,21+i, characters[i].nom);		
@@ -344,13 +346,18 @@ void spells(char p)
 						zap();
 						printAtXY(6,12, "       !IMPOSSIBLE!       ");
 						wait(250);
+						printAtXY(6,12, "                          ");
 					} else {
 						// ça marche
 						characters[a].et=characters[a].pv;
 						if(i!=0) characters[a].ok=1;
 					}
 				}
+				printAtXY(7,16, "                         ");
 			}
+			printAtXY(7,12, "                         ");
+			// affichage équipe
+			printTeam();
 			a='o';
 		}
 	}
@@ -615,9 +622,10 @@ void chest(void)
 		int prime = rand()%5000 + 3000;
 		characters[a].ri += prime/10; // attention on stocke les ca / 10
 		printAtXY(20,12, "un TRESOR de");
-		printAtXY(33,15, itoa(prime));
-		printAtXY(38,15, "ca");
+		printAtXY(33,13, itoa(prime));
+		printAtXY(38,13, "ca");
 		tl++; // on peut aller a la ville suivante !
+		printAtXY(2,15, "Vous trouvez le chemin vers une nouvelle ville !");
 		ca=0;
 		wait(150);
 		return;
