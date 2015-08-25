@@ -93,9 +93,6 @@ void loadNomsImagesPersos()
 	}
 }
 
-#define NEW_VERSION 1
-
-#ifdef NEW_VERSION
 void dialogue(char d)
 {
 	unsigned char i, j, k, x, xinit, y, t, lg;
@@ -107,13 +104,13 @@ void dialogue(char d)
 	// bande en haut et en bas
 	do {
 		if (coteTexte==0) {
-			xinit=x=138;
-			deltaCote = 20;
-			maxCote = 239;
+			xinit=x=132; // 120 = 20 octets (image) + 12 = 1 octet couleur texte + 1 de marge
+			deltaCote = 20; 
+			maxCote = 239; // max écran
 		} else {
-			xinit=x=12;
+			xinit=x=12; // 1 octet paper, 1 octet ink
 			deltaCote = 0;
-			maxCote = 108;
+			maxCote = 119; // demi écran
 		}
 		/*
 		p = (unsigned char*)(0xa000+20);
@@ -123,55 +120,53 @@ void dialogue(char d)
 			memset(q+deltaCote,64,20);
 		}
 		*/
-		for(i=0;i<17;i++) {
+		for(i=0;i<21;i++) {
 			curset(x,20,3);
 			hchar('=',0,1);
 			curset(x,170,3);
 			hchar('=',0,1);
-			x+=6;
+			x+=5;
 		}
 		x=xinit;
 		y=30;
 		k=0;
 		for(t=0;t<15;t++) {
-			lg = strlen(textesPersos[d][t]);
+			lg = 21; // strlen(textesPersos[d][t]);
 			for(i=0;i<lg;i++) {
 				curset(x,y,3);
 				hchar(textesPersos[d][t][i],0,1);
 				// printf("%c",textesPersos[1][t][i]);
-				x+=6;
-				if(x>maxCote) {
-					x=xinit;
-					y+=10;				
-					if (y>160) {
-						if(k==0) {
-							puts("Appuyez sur une touche pour continuer");
-							c=get();
-							if(c=='f'||c=='F') return;
-						}
-						k=(k+1)%13;
-						// scroll text
-						// adresses des deux premières lignes
-						p = (unsigned char*)(0xa000+40*30);
-						q = p+400;
-						// tant que q n'a pas dépassé la fin de la zone d'affichage
-						while(q<(unsigned char*)(0xbf18 - 40*30+2)) {
-							// on recopie les 20 octets de la ligne qui 
-							// commence à q dans celle qui commence à p
-							memcpy(p+deltaCote,q+deltaCote,20);
-							// on passe aux deux lignes suivantes
-							p += 40;
-							q += 40;
-						}
-						y = 160;
-						p = (unsigned char*)(0xbf18 - 40*40+2);
-						for(j=0;j<10;j++) {
-							memset(p+deltaCote,64,18);
-							p += 40;
-						}
-						wait(1);
-					}
+				x+=5;
+			}
+			x=xinit;
+			y+=10;				
+			if (y>160) {
+				if(k==0) {
+					puts("Appuyez sur une touche pour continuer");
+					c=get();
+					if(c=='f'||c=='F') return;
 				}
+				k=(k+1)%13;
+				// scroll text
+				// adresses des deux premières lignes
+				p = (unsigned char*)(0xa000+40*30);
+				q = p+400;
+				// tant que q n'a pas dépassé la fin de la zone d'affichage
+				while(q<(unsigned char*)(0xbf18 - 40*30+2)) {
+					// on recopie les 20 octets de la ligne qui 
+					// commence à q dans celle qui commence à p
+					memcpy(p+deltaCote,q+deltaCote,20);
+					// on passe aux deux lignes suivantes
+					p += 40;
+					q += 40;
+				}
+				y = 160;
+				p = (unsigned char*)(0xbf18 - 40*40+2);
+				for(j=0;j<10;j++) {
+					memset(p+deltaCote,64,18);
+					p += 40;
+				}
+				wait(1);
 			}
 		}
 		/*
@@ -212,140 +207,7 @@ void dialogue(char d)
 	get();
 
 }
-#else
-void dialogue()
-{
-	unsigned char i, j, k, x, xinit, y, t, lg;
-	unsigned char *p, *q;
-	char c;
-	int deltaCote = 0;
-	int maxCote = 103;
 
-	// bande en haut et en bas
-	do {
-		if (coteTexte==0) {
-			xinit=x=138;
-			deltaCote = 20;
-			maxCote = 239;
-		} else {
-			xinit=x=12;
-			deltaCote = 0;
-			maxCote = 108;
-		}
-		/*
-		p = (unsigned char*)(0xa000+20);
-		q = (unsigned char*)(0xbf18-30);
-		for(j=0;j<10;j++) {
-			memset(p+deltaCote,64,20);
-			memset(q+deltaCote,64,20);
-		}
-		*/
-		for(i=0;i<17;i++) {
-			curset(x,20,3);
-			hchar('=',0,1);
-			curset(x,170,3);
-			hchar('=',0,1);
-			x+=6;
-		}
-		x=xinit;
-		y=30;
-		k=0;
-		for(t=0;t<15;t++) {
-			lg = strlen(textesPersos[0][t]);
-			for(i=0;i<lg;i++) {
-				curset(x,y,3);
-				hchar(textesPersos[0][t][i],0,1);
-				// printf("%c",textesPersos[1][t][i]);
-				x+=6;
-				if(x>maxCote) {
-					x=xinit;
-					y+=10;				
-					if (y>160) {
-						if(k==0) {
-							puts("Appuyez sur une touche pour continuer");
-							c=get();
-							if(c=='f'||c=='F') return;
-						}
-						k=(k+1)%13;
-						// scroll text
-						// adresses des deux premières lignes
-						p = (unsigned char*)(0xa000+40*30);
-						q = p+400;
-						// tant que q n'a pas dépassé la fin de la zone d'affichage
-						while(q<(unsigned char*)(0xbf18 - 40*30+2)) {
-							// on recopie les 20 octets de la ligne qui 
-							// commence à q dans celle qui commence à p
-							memcpy(p+deltaCote,q+deltaCote,20);
-							// on passe aux deux lignes suivantes
-							p += 40;
-							q += 40;
-						}
-						y = 160;
-						p = (unsigned char*)(0xbf18 - 40*40+2);
-						for(j=0;j<10;j++) {
-							memset(p+deltaCote,64,18);
-							p += 40;
-						}
-						wait(1);
-					}
-				}
-			}
-		}
-		/*
-é - {
-ù - |
-è - }
-ê - ~
-à - @
-^ - ô
-
-		*/
-		puts("Dois-je r{p{ter (O/N)?");
-		c = get();
-		// scrolling d'effacement
-		x=20;
-		p = (unsigned char*)(0xa000+40*x);
-		q = (unsigned char*)(0xbf18-40*x);
-		while(p+800<q) {
-			memcpy(p+deltaCote+400,p+deltaCote,20);
-			memcpy(q+deltaCote-400,q+deltaCote,20);
-			memset(p+deltaCote+2,64,18);
-			memset(q+deltaCote+2,64,18);
-			p += 40;
-			q -= 40;
-			wait(1);
-		}
-		if(c=='o'||c=='O') {
-			while(p<q) {
-				memset(p+deltaCote+2,64,18);
-				memset(q+deltaCote+2,64,18);
-				p += 40;
-				q -= 40;
-			}
-		}
-
-	} while(c=='o'||c=='O');	
-	puts("Appuyez sur une touche pour continuer");
-	get();
-}
-
-#endif
-/*
-void loadRoutines()
-{
-	unsigned char ret;
-    ret = DiscLoad("LZ77.COM");        
-    // printf("Retour %d\n", ret);
-    if (ret!=0) {
-		return;
-	}
-    ret = DiscLoad("AFFIMAGE.COM");        
-    // printf("Retour %d\n", ret);
-    if (ret!=0) {
-		return;
-	}
-}
-*/
 // from lz77.s
 void lz77_unpack(void *ptr_dst, void *ptr_dst_end, void *ptr_src);
 // from affimage.s
@@ -367,7 +229,7 @@ void loadImage(char *image)
    		ac=0xa002;       
 	} else {
 		ink(peek(0x7ffe));
-		ac=0xa014;
+		ac=0xa016;
 	}
 	
 	// decompresse image
@@ -409,6 +271,7 @@ void loadImage(char *image)
 	}
 }
 
+#define NEW_VERSION 1
 #ifdef NEW_VERSION
 void main()
 {		
@@ -517,61 +380,61 @@ void main()
 		hires();
 		//loadRoutines();
 		loadImage("PORTR01.DAT"); // margery
-		dialogue();
+		dialogue(0);
 		hires();
 		loadImage("PORTR02.DAT"); // tyrion
-		dialogue();
+		dialogue(0);
 		hires();
 		loadImage("PORTR03.DAT"); // jaime
-		dialogue();
+		dialogue(0);
 		hires();
 		loadImage("PORTR04.DAT"); // jon
-		dialogue();
+		dialogue(0);
 		hires();
 		loadImage("PORTR05.DAT"); // robert
-		dialogue();
+		dialogue(0);
 		hires();
 		loadImage("PORTR06.DAT"); // luwin
-		dialogue();
+		dialogue(1);
 		hires();
 		loadImage("PORTR07.DAT"); // LF
-		dialogue();
+		dialogue(1);
 		hires();
 		loadImage("PORTR08.DAT"); // Tywin
-		dialogue();
+		dialogue(1);
 		hires();
 		loadImage("PORTR09.DAT"); // Ned
-		dialogue();
+		dialogue(1);
 		hires();
 		loadImage("PORTR10.DAT"); // Sansa
-		dialogue();
+		dialogue(1);
 		hires();
 		loadImage("PORTR11.DAT"); // Sorciere
-		dialogue();
+		dialogue(1);
 		hires();
 		loadImage("PORTR12.DAT"); // Theon
-		dialogue();
+		dialogue(1);
 		hires();
 		loadImage("PORTR13.DAT"); // Asha
-		dialogue();
+		dialogue(1);
 		hires();
 		loadImage("PORTR14.DAT"); // Loras
-		dialogue();
+		dialogue(1);
 		hires();
 		loadImage("PORTR15.DAT"); // Blackfish
-		dialogue();
+		dialogue(1);
 		hires();
 		loadImage("PORTR16.DAT"); // Melisandre
-		dialogue();
+		dialogue(1);
 		hires();
 		loadImage("PORTR17.DAT"); // Stannis
-		dialogue();
+		dialogue(1);
 		hires();
 		loadImage("PORTR18.DAT"); // Oberyn
-		dialogue();
+		dialogue(1);
 		hires();
 		loadImage("PORTR19.DAT"); // Cersey
-		dialogue();
+		dialogue(1);
 		
 		io_needed = 1;
 		saveCharacters();

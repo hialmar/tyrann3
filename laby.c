@@ -901,6 +901,7 @@ void manageCell(void)
 				DiscLoad("STARK.BIN");
 				puts("            < ESPACE >");
 				a = get();
+				if (a == 's' || a == 'S') return; // skip
 				text();
 				io_needed = 0;
 				saveCharacters();

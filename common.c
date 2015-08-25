@@ -114,10 +114,10 @@ char *loadTexts(char *ptr, char *tab[])
 			exit(1);
 		}
 		memcpy(tab[t], ptr, longueur);
-		tab[t][longueur]=' ';
-		tab[t][longueur+1]=0;
+		//tab[t][longueur]=' ';
+		tab[t][longueur]=0;
 		//printf("Texte %s \n", tab[t]);
-		ptTextes+=longueur+2;
+		ptTextes+=longueur+1;
 		ptr+=longueur;
 	}
 	return ptr;
