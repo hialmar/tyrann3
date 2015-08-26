@@ -3,7 +3,10 @@
 
 #include "bit_ops.h"
 
-extern char textes[];
+#define TMAX 1024
+char textes[TMAX];
+int tmax = TMAX;
+
 extern char * ptTextes;
 
 char * textesPersos[2][15];
@@ -131,7 +134,7 @@ void dialogue(char d)
 		y=30;
 		k=0;
 		for(t=0;t<15;t++) {
-			lg = 21; // strlen(textesPersos[d][t]);
+			lg = strlen(textesPersos[d][t]);
 			for(i=0;i<lg;i++) {
 				curset(x,y,3);
 				hchar(textesPersos[d][t][i],0,1);
@@ -175,7 +178,7 @@ void dialogue(char d)
 è - }
 ê - ~
 à - @
-^ - ô
+ô - ^
 
 		*/
 		puts("Dois-je r{p{ter (O/N)?");
@@ -275,7 +278,7 @@ void loadImage(char *image)
 #ifdef NEW_VERSION
 void main()
 {		
-		char i,j,a;
+		char i,j,a,c;
 		unsigned int *seed;
 		backupPageZero();
 		io_needed=0;
@@ -327,8 +330,12 @@ void main()
 					wait(500);
 				}
 			} else {
-				printf("Je n'ai plus rien a dire.\n");
-				wait(500);
+				wait(200);
+				puts("Dois-je r{p{ter (O/N)?");
+				c = get();
+				if(c=='o'||c=='O') {
+					dialogue(ca-7);
+				}
 			}
 		} else if (ville == 9 && ca == 51) {
 			// Jon
@@ -339,8 +346,12 @@ void main()
 				dialogue(0);
 				SetBit(&dedans, 7);
 			} else {
-				printf("Je n'ai plus rien a dire.\n");
-				wait(500);
+				wait(200);
+				puts("Dois-je r{p{ter (O/N)?");
+				c = get();
+				if(c=='o'||c=='O') {
+					dialogue(0);
+				}
 			}
 		} else if (ville == 9 && ca == 52) {
 			// Jon
@@ -354,7 +365,7 @@ void main()
 				restorePageZero();
 				SwitchToCommand("GENERIC");
 			} else {
-				printf("Je n'ai rien a dire.\n");
+				printf("Je n'ai rien a vous dire.\n");
 				wait(500);
 			}
 		}

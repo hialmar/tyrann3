@@ -40,7 +40,10 @@ char *portes[] = {"King Robert","Queen Cersei","Prison","Conseil",
 
 char *maisons[] = { "MARTELL","BARATHEON","TYRELL","GREYJOY","ARRYN","LANNISTER","TULLY","STARK"};
 
-extern char textes[];
+#define TMAX 1024
+char textes[TMAX];
+int tmax = TMAX;
+
 extern char * ptTextes;
 
 extern char s; // direction (est)
@@ -874,7 +877,7 @@ void manageCell(void)
 		//	puts("\n");
 		//}
 	} else if (ca==99) {
-		printf("        Retour Village (O/N)?\n");
+		printf("        Retour au village (O/N)?\n");
         a = get();
         if (a == 'o' || a == 'O') { 
         	text();
@@ -892,14 +895,14 @@ void manageCell(void)
 		// si le combat n'a pas été déjà fini
 		unsigned char nb = ca - 30 + 8; // les 8 premiers bits stockent les coffres
 		if(!TestBit(combats_coffres[ville-1], nb)) {
-			printf("Combat !", ca);
+			printf("       Combat !", ca);
 			wait(300);
 			//printf("Combat %d non fini!\n", nb);
 			//printf("debug : C pour combat, autre evite.\n");
 			//a = get();
 			//if (a == 'c' || a == 'C') {
 				DiscLoad("STARK.BIN");
-				puts("            < ESPACE >");
+				puts("    < ESPACE >");
 				a = get();
 				if (a == 's' || a == 'S') return; // skip
 				text();
@@ -914,7 +917,7 @@ void manageCell(void)
 		// si le coffre n'a pas été déjà ouvert
 		unsigned char nb = ca - 21;
 		if(!TestBit(combats_coffres[ville-1], nb)) {
-			printf("Vous trouvez un coffre !", ca);
+			printf("      Vous trouvez un coffre !", ca);
 			wait(300);
 			//printf("Coffre %d non fini!\n", nb);
 			//printf("debug : C pour camp, autre evite.\n");
@@ -982,7 +985,7 @@ void forward(void)
 {
 	char b;
 	// 600 IF F(1)>0 AND F(1)<7 THEN GOTO 660
-	if (f[0]>0 && f[0]<7) {
+	if (f[0]==1) {
 		// 660 B=INT(RND(1)*3+1)
 		// 670 SHOOT:PRINT SPC(5) TX$(B) :WAIT8*TI:SHOOT:CLS
 		// 672 IF B=2 THEN ZAP:SHOOT:ZAP
@@ -990,12 +993,17 @@ void forward(void)
 		printf("     ");
 		b = rand()%3;
 		printf(message[b]);
-		wait(160);
+		wait(360);
 		shoot();
 		cls();
 		if (b==1) {
 			zap();shoot();zap();
 		}
+	} else if(f[0]>1 && f[0]<7) {
+		shoot();
+		printf("Prenez la porte, mais pas comme ca !");
+		wait(360);
+		cls();
 	} else {
 		s_old = s;
 		x_old = x;
@@ -1149,14 +1157,15 @@ void main()
 							ping();
 							// on avance deux fois
 							prep();
+							printf("On passe la porte\n");
+							wait(180);
 							drawLaby();
 							forward();
-							printf("On entre dans la pi}ce\n");
 						} else {
 							////// MODIF Maximus *******
 							if(cles[ville-1][f[0]-3]==0) {
 								zap();
-								printf("Ou est la cle ?\n");
+								printf("Ou est la cl{ ?\n");
 							} else {
 								#ifdef debug
 								printf("Porte %d cle(%d,%d) %d  ", 
@@ -1169,9 +1178,11 @@ void main()
 								ping();
 								// on avance deux fois
 								prep();
+								printf("On passe la porte\n");
+								wait(180);
 								drawLaby();
 								forward();
-								printf("On entre dans la pi}ce\n");
+								
 							}
 						}
 					}
@@ -1231,7 +1242,8 @@ void main()
 					break;
 				//#endif
 				default:
-					;
+					puts("I:avance, J:droite, L:gauche\nESPACE: ouvrir porte");
+					wait(200);
 			}
 			// 450 GOTO 300
 		}

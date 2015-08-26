@@ -80,8 +80,6 @@ extern void *memset(void *buffer, int c, int count);
 #define A_FWCYAN	 6
 #define A_FWWHITE	 7
 
-#define TMAX 1024
-
 struct character {
 	char 		  nom[11]; // nom
 	unsigned int  ri; // richesses (nom => 2 octets)

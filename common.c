@@ -15,7 +15,9 @@ char eencre[] = { A_FWRED, A_FWMAGENTA, A_FWYELLOW, A_FWGREEN,
 				// Riverrun  Winterfell
 				A_FWBLUE,    A_FWWHITE };
 
-char textes[TMAX];
+extern char textes[]; // defini dans les fichiers contenant le main pour moduler la taille
+extern int tmax;
+
 char * ptTextes = (char*)textes;
 char nbTextes = 0;
 				  
@@ -98,16 +100,16 @@ void printFrame(int taille)
 
 char *loadTexts(char *ptr, char *tab[])
 {
-	char t, tmax, longueur;
-	tmax = *ptr; ptr++;
+	char t, max, longueur;
+	max = *ptr; ptr++;
 	//printf("ptTextes : %x\n", (unsigned int)ptTextes);
-	nbTextes = tmax;
-	//printf("Nb textes : %d\n", tmax);
-	for (t=0; t<tmax; t++) {
+	nbTextes = max;
+	//printf("Nb textes : %d\n", max);
+	for (t=0; t<max; t++) {
 		longueur = *ptr; ptr++;
 		//printf("Longueur texte %d : %d\n", t, longueur);
 		tab[t] = ptTextes;
-		if (ptTextes+longueur+1-textes > TMAX) {
+		if (ptTextes+longueur+1-textes > tmax) {
 			printf("Le tableau est trop petit, il faut au moins %d caracteres\n",
 				ptTextes+longueur+1-textes);
 			//restorePageZero();

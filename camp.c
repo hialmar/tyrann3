@@ -1,7 +1,10 @@
 
 #include "tyrann.h"
 
-extern char textes[];
+#define TMAX 800
+char textes[TMAX];
+int tmax = TMAX;
+
 extern char * ptTextes;
 extern char nbTextes;
 
@@ -400,7 +403,7 @@ void inspect(void)
 	printAtXY(33, 4, itoa(characters[i].xp));
 	
 	// affichage santé, pv
-	printAtXY(5,  6, "Sante:");
+	printAtXY(5,  6, "Sant{:");
 	printAtXY(11, 6, etat[characters[i].ok-1]);
 	printAtXY(22, 6, "PV :");
 	printAtXY(27, 6, itoa(characters[i].et));
@@ -550,6 +553,7 @@ void chest(void)
 	if (characters[a].cp!=3) {
 		printAtXY(9,9, "C'est pas son truc !");
 		zap();
+		wait(500);
 		return;
 	}
 	for(i=0;i<6;i++) {
@@ -564,22 +568,22 @@ void chest(void)
 		printAtXY(14,12, "Et non ! t1:");
 		printAtXY(27,12, itoa(tentatives));
 		zap();
-		wait(150);
+		wait(500);
 		return;
 	}
-	printAtXY(11,12, "Ouvert ! Bravo.");
+	printAtXY(11,11, "Ouvert ! Bravo.");
 	ping();
-	printAtXY(6,12, "Il trouve : ");
+	printAtXY(6,12, "Il trouve ");
 	if(ca==21) {
 		cles[ville-1][0]=1;
 		printAtXY(20,12, "Une clef en fer"); // clé 1
-		wait(150);
+		wait(500);
 		ca=0;
 		return;
 	} else if(ca==26) {
 		cles[ville-1][3]=1;
 		printAtXY(20,12, "Une clef en or"); // clé 4 (prison)
-		wait(150);
+		wait(500);
 		ca=0;
 		return;
 	} else if(ca==27) {
@@ -611,7 +615,7 @@ void chest(void)
 			printAtXY(17,15, "a trouver");	
 		}			
 		ca=0;
-		wait(150);
+		wait(500);
 		return;
 	} else if(ca==28) {
 		// tresor 
@@ -625,9 +629,10 @@ void chest(void)
 		printAtXY(33,13, itoa(prime));
 		printAtXY(38,13, "ca");
 		tl++; // on peut aller a la ville suivante !
-		printAtXY(2,15, "Vous trouvez le chemin vers une nouvelle ville !");
+		printAtXY(4,15, "Vous trouvez le chemin vers");
+		printAtXY(4,16, "     une nouvelle ville !");
 		ca=0;
-		wait(150);
+		wait(500);
 		return;
 	}
 	
@@ -644,21 +649,17 @@ void chest(void)
 			ss=rand()%22+19;
 		} while(ss==40 || (ss>21 && ss<29) || (ss>36 && ss<44));
 	}
-	
-	// test 1
-	// à faire TODO :::: ss = 35;
-	
+		
 	printAtXY(19,12, textesItems[ss-1]);
-	wait(150);
 	if(characters[a].sad[5]>0) {
 		zap();
 		printAtXY(11,14, "Sac a dos plein ! Dommage.");
-		wait(150);
+		wait(500);
 		return;
 	}
 	
 	if(ss == 36 || ss == 35) { // selle de dragon ou boussole
-		// on essai de les donner à quelqu'un qui pourra s'en servir
+		// on essaie de les donner à quelqu'un qui pourra s'en servir
 		char j;
 		
 		for(j=0;j<6;j++) {
@@ -672,6 +673,9 @@ void chest(void)
 				if (characters[j].sad[i]==0) {
 					// on a trouvé de la place
 					characters[j].sad[i]=ss;
+					printAtXY(11,14, "Il donne l'objet a ");
+					printAtXY(15,15, characters[j].nom);
+					wait(500);
 					// on positionne les booléens
 					if (ss == 35) boussole = 1;
 					else if (ss == 36) selle_dragon = 1;
@@ -692,9 +696,11 @@ void chest(void)
 			// le coffre est désormais vide
 			ca=0;
 			// on arrête tout
+			wait(500);
 			return;
 		}
 	}
+	wait(500);
 }
 		
 void sleep(void)
@@ -733,7 +739,7 @@ void sleep(void)
 					characters[p].sp[i]=rand()%2+3;
 			}
 		}	
-		printAtXY(8,5, "Vous recuperez vos sorts ");
+		printAtXY(8,5, "Vous r{cup{rez vos sorts ");
 		wait(150);
 	}
 }	

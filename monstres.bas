@@ -21,40 +21,28 @@
 
 
 999 REM  AGI,PV,CC,BF,QI
-1001 DATA 30, 9,25, 1,15
-1002 DATA 25,12,28, 1,20
-1003 DATA 30,15,30, 1,25
-1004 DATA 30,18,32, 1,28
-1005 DATA 32,20,35, 2,30
-1006 DATA 28,20,36, 2,35
-1007 DATA 33,22,36, 2,37
-1008 DATA 40,24,40, 2,37
-1009 DATA 25,30,30, 2,18
+1001 DATA 35,20,40, 1,15'Rat mutant
+1002 DATA 30,25,42, 1,20'Chien-loup
+1003 DATA 35,25,44, 2,25'Chacal
+1004 DATA 35,30,40, 2,28'Gobelin
+1005 DATA 38,35,46, 3,30'Coupe-jarret
+1006 DATA 35,30,44, 3,35'Gueux
+1007 DATA 38,35,48, 4,37'Rodeur
+1008 DATA 45,40,55, 4,37'Spadassin
+1009 DATA 25,55,55, 8,18'Ogre
+1010 DATA 48,45,58, 6,32'Dothrakhi
+1011 DATA 27,65,50, 9,20'Geant
+1012 DATA 49,45,60, 5,30'Sauvageon
+1013 DATA 55,50,50, 6,20'Lion
+1014 DATA 40,65,48, 9,18'Grizzly
 
-1010 DATA 42,26,44, 3,32
-1011 DATA 22,40,42, 3,20 
-1012 DATA 44,24,48, 3,30
-1013 DATA 50,20,40, 4,20
-1014 DATA 35,36,35, 4,18
+1015 DATA 50,40,35, 5,50'Sorcier de Feu
+1016 DATA 54,40,30, 6,52'Sombre Pretresse
+1017 DATA 56,46,36, 6,54'Moine Fou
+1018 DATA 45,50,34, 6,54'Druide-Demon
+1019 DATA 56,55,30, 7,58'Esprit Noir
+1020 DATA 60,58,44, 7,65'Septon Blanc
 
-1015 DATA 42,30,25, 4,50
-1016 DATA 46,25,20, 5,52
-1017 DATA 46,30,28, 5,54
-
-1018 DATA 42,30,25, 5,50
-1019 DATA 46,25,20, 6,52
-1020 DATA 46,30,28, 6,56
-
-
-1021 DATA 50,36,42, 6,55
-1022 DATA 42,38,50, 7,55
-1023 DATA 45,46,50, 7,30
-
-2000 REM  Rat mutant, Chien-loup, Chacal, Gobelin, Coupe-jarret, Gueux, Rodeur, Spadassin, Ogre
-2010 REM  Dothrakhi, Geant, Sauvageon, Lion, Grizzly
-2020 REM  Sorcier de Feu, Sombre Pretresse, Moine Fou
-2030 REM  Druide-Demon, Esprit Noir, Septon Blanc
-2040 REM  Elfe gris, Chevalier maudit, Marcheur blanc 
-
-
-
+1021 DATA 64,60,60, 8,68'Elfe gris
+1022 DATA 64,65,70,12,75'Chevalier maudit
+1023 DATA 80,80,80,15,45'Marcheur blanc
