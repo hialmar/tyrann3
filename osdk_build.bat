@@ -129,6 +129,9 @@ echo "TPRIX.tap"
 echo "monstres.tap"
 %OSDK%\bin\bas2tap -b2t1 monstres.bas BUILD\monstres.tap
 
+echo "editor.tap"
+%OSDK%\bin\bas2tap -b2t1 editor.bas BUILD\editor.tap
+
 :Tap2dsk
 
 pause
@@ -139,7 +142,7 @@ pause
 
 %OSDK%\bin\tap2dsk -n"   Tyrann III" -i"DIR" BUILD\TIMGPERSOS.tap BUILD\TITEMS.tap  BUILD\L1King.tap BUILD\TXTPER1.tap BUILD\L2Dorne.tap BUILD\TXTPER2.tap BUILD\L3Storm.tap BUILD\TXTPER3.tap BUILD\L4HighGa.tap BUILD\TXTPER4.tap BUILD\L5Pike.tap BUILD\TXTPER5.tap BUILD\L6Eyrie.tap BUILD\TXTPER6.tap BUILD\L7Caster.tap BUILD\TXTPER7.tap BUILD\L8River.tap BUILD\TXTPER8.tap BUILD\L9Winter.tap BUILD\TXTPER9.tap BUILD\TXTPER10.tap BUILD\TPRIX.tap BUILD\monstres.tap t3_data.dsk
 
-%OSDK%\bin\tap2dsk -n"   Tyrann III" -i"DIR" BUILD/laby.tap BUILD\combat.tap BUILD\creation.tap BUILD\camp.tap BUILD\ville.tap BUILD\dialog.tap BUILD\cpzerop.tap GENERIC.tap t3_prog.dsk
+%OSDK%\bin\tap2dsk -n"   Tyrann III" -i"DIR" BUILD/laby.tap BUILD\combat.tap BUILD\creation.tap BUILD\camp.tap BUILD\ville.tap BUILD\dialog.tap BUILD\cpzerop.tap GENERIC.tap BUILD\editor.tap t3_prog.dsk
 
 pause
 
