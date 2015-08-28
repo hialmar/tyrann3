@@ -197,7 +197,8 @@ void items(char p)
 			if(o==-1)
 				return; // on arrête tout
 			item = characters[p].sad[o];
-			if ((item<=0)||(item>21 && item<31)||(item>38)) {
+			// IF(IT>21ANDIT<27)OR(IT>33ANDIT<44)THENL=24
+			if ((item<=0)||(item>21 && item<27)||(item>33 && item<44)) {
 				ping();
 				printAtXY(6,25, "       !IMPOSSIBLE!       ");
 				wait(250);
@@ -641,6 +642,14 @@ void chest(void)
 	// 21415 SS=FNA(22)+19:IFSS=40OR(SS>21ANDSS<29)OR(SS>36ANDSS<44)THEN21415
 	// 21420 S$=IT$(SS)
 	
+	if(characters[a].sad[5]>0) {
+		zap();
+		printAtXY(19,12, "Un objet Mais...");
+		printAtXY(6,14, "Son sac a dos est plein ! Dommage.");
+		wait(500);
+		return;
+	}
+		
 	ss = rand()%100+1;
 	if(ss<5||ss>95) {
 		ss=rand()%5+43;
@@ -649,14 +658,8 @@ void chest(void)
 			ss=rand()%22+19;
 		} while(ss==40 || (ss>21 && ss<29) || (ss>36 && ss<44));
 	}
-		
+	
 	printAtXY(19,12, textesItems[ss-1]);
-	if(characters[a].sad[5]>0) {
-		zap();
-		printAtXY(11,14, "Sac a dos plein ! Dommage.");
-		wait(500);
-		return;
-	}
 	
 	if(ss == 36 || ss == 35) { // selle de dragon ou boussole
 		// on essaie de les donner à quelqu'un qui pourra s'en servir
