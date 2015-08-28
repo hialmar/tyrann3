@@ -38,16 +38,16 @@ extern unsigned char selle_dragon;
 extern char io_needed;
 extern char eencre[];
 
-char *classe[] = { "Chevalier","Mercenaire","Ranger","Sorcier","Mestre","Septon" };
-char *etat[] = { "OK", "-Empoi-  ", "-Paral-  ", ">MORT<  " };
+char *classe[] = { "Knight","Mercenary","Ranger","Wizard","Maester","Septon" };
+char *etat[] = { "OK", "-Poison- ", "-Paral- ", ">DEAD< " };
 char *maisons[] = { "MARTELL","BARATHEON","TYRELL","GREYJOY","ARRYN","LANNISTER","TULLY","STARK"};
 
-char *sorts[] = { "SOMMEIL","FEU","PIERRE","VENIN","SANG","FOUDRE", "LAVE", "SEISME",
-				  "EAU", "SERUM", "MUSCLE", "BOUCLIER", "ELIXIR", "ECRAN", "VIE", "MORT",
-				  "EPEE-FEU", "FORCE", "CHARME", "VISION", "GLACE", "ILLUSION", "VENT", 
+char *sorts[] = { "SLEEP","FIRE","STONE","VENOM","BLOOD","LIGHTNING", "LAVA", "EARTHQUAKE",
+				  "WATER", "SERUM", "MUSCLE", "SHIELD", "ELIXIR", "SCREEN", "LIFE", "DEATH",
+				  "FIRE-SWORD", "FORCE", "CHARM", "VISION", "ICE", "ILLUSION", "WIND", 
 				  "DRAGON" };
 				  
-char *nomIngredients[] = { "sangsue royale","fleur de Lys","encre de poulpe","rose du Val","huile du Roc","foie de truite"};
+char *nomIngredients[] = { "royal leech","lily flower","kraken ink","rose of the Vale","oil of the Rock","trout liver"};
 
 char tentatives = 0; // pour les coffres
 
@@ -79,7 +79,7 @@ void printTeam(void)
 	char i,encre;
 	attribAtXY(0,20,A_FWWHITE);
 	attribAtXY(1,20,A_BGRED); // fond rouge
-	printAtXY(2,20," PERSONNAGE    CASTE     PV   ET  CA"); 
+	printAtXY(2,20,"CHARACTERS     CAREER     HP  ST  AC"); 
 	for(i=0;i<6;i++) {
 		switch(characters[i].cp) {
 			case 1:
@@ -126,7 +126,7 @@ void money(char p)
 	printFrame(18);
 	strcpy(titre, " < ");
 	strcat(titre, characters[p].nom);
-	strcat(titre, " DONNE > ");
+	strcat(titre, " GIVES > ");
 	j = strlen(titre);
 	a = (31-j)/2 + 4;
 	printTitle(a,2, A_BGRED, titre, j);
@@ -137,11 +137,11 @@ void money(char p)
 		printAtXY(19,4+i, itoa(characters[i].ri*10));
 	}
 	// affiche les richesses du héros sélectionné
-	printAtXY(5,13, "Votre Bourse :");
-	printAtXY(19,13, itoa(characters[p].ri*10));
-	printAtXY(27,13, "Cerfs Ag");
+	printAtXY(4,13, "Your Money :");
+	printAtXY(18,13, itoa(characters[p].ri*10));
+	printAtXY(26,13, "Silver Stags");
 	// demande la somme
-	printTitle(4,14, A_BGBLUE, "COMBIEN de C.Ag ?", 17);
+	printTitle(4,14, A_BGBLUE, "HOW MUCH ?", 17);
 	somme = 0;
 	while(1) {
 		a = get();
@@ -165,7 +165,7 @@ void money(char p)
 	}
 	// si la somme n'est pas nulle on demande le destinataire
 	if (somme != 0) {
-		printTitle(4,16, A_BGBLUE, "ENRICHIR QUEL HEROS ? (0:Aucun)", 31);
+		printTitle(4,16, A_BGBLUE, "TO WHOM ? (0:None)", 31);
 		while(1) {
 			a = get();
 			if (a<'0' || a>'6')
@@ -187,7 +187,7 @@ void items(char p)
 {
 	char a,i,j, item,o;
 	char titre[32];
-	printTitle(4,25, A_BGBLUE, "Quel Objet ? (0:aucun) ?", 24);
+	printTitle(4,25, A_BGBLUE, "What Item ? (0:None) ?", 24);
 	while(1) {
 		a = get();
 		if (a<'0' || a>'6')
@@ -212,7 +212,7 @@ void items(char p)
 	printFrame(18);
 	strcpy(titre, " < ");
 	strcat(titre, characters[p].nom);
-	strcat(titre, " DONNE > ");
+	strcat(titre, " GIVES > ");
 	j = strlen(titre);
 	a = (31-j)/2 + 4;
 	printTitle(a,2, A_BGRED, titre, j);
@@ -224,7 +224,7 @@ void items(char p)
 		printAtXY(10,7+i, itoa(i+1));
 		printAtXY(12,7+i, characters[i].nom);
 	}
-	printTitle(4,16, A_BGBLUE, "A QUEL HEROS ? (0:Aucun)", 24);
+	printTitle(4,16, A_BGBLUE, "TO WHOM ? (0:Aucun)", 24);
 	while(1) {
 		a = get();
 		if (a<'0' || a>'6')
@@ -276,7 +276,7 @@ void spells(char p)
 	
 	cls();
 	printFrame(14);
-	printTitle(11,2, A_BGRED, " < * SORTS * > ", 15);
+	printTitle(11,2, A_BGRED, " < * SPELLS * > ", 15);
 	max = characters[p].ni > 8 ? 8 : characters[p].ni; 
 	for(i=0;i<max;i++) {
 		printAtXY(11,4+i, itoa(i+1));
@@ -286,38 +286,38 @@ void spells(char p)
 		printAtXY(30,4+i, ")");
 	}
 	if (characters[p].cp!=5) {
-		printTitle(14,14, A_BGRED, " <ESPACE> ", 10);
+		printTitle(14,14, A_BGRED, " <SPACE> ", 10);
 		a = get();
 	} else { // mestre
-		a = 'o';
-		while(a == 'o' || a == 'O') {
-			printTitle(7,14, A_BGRED, " Un sort de soin (O/N) ? ", 25);
+		a = 'y';
+		while(a == 'y' || a == 'Y') {
+			printTitle(7,14, A_BGRED, " Healing Spell (Y/N) ? ", 25);
 			a = get();
-			if (a!='o' && a!='O')
+			if (a!='y' && a!='Y')
 				return;
 			printAtXY(6,14, "                               ");
 			// affichage équipe
 			printTeam();
-			printAtXY(8,12, "        LEQUEL  ?      ");
+			printAtXY(8,12, "      WHICH ONE  ?      ");
 			while(1) {
 				a = get();
 				if (a<'1' || a>'7' || a=='4' || a=='6') {
 					zap(); // zap si pas correct
 					printAtXY(6,12, "       !IMPOSSIBLE!       ");
 					wait(250);
-					printAtXY(8,12, "        LEQUEL  ?      ");
+					printAtXY(8,12, "      WHICH ONE  ?      ");
 				} else {
 					i = a - '1';
 					if(i>=characters[p].ni) {
 						zap(); // pas du bon niveau
 						printAtXY(6,12, "       !IMPOSSIBLE!       ");
 						wait(250);
-						printAtXY(8,12, "        LEQUEL  ?      ");
+						printAtXY(8,12, "      WHICH ONE  ?      ");
 					} else
 						break; // correct : on sort
 				}
 			}		
-			strcpy(titre, "Incantation de ");
+			strcpy(titre, "Incantation of ");
 			strcat(titre, sorts[(characters[p].cp-4)*8+i]);
 			j = strlen(titre);
 			a = (31-j)/2 + 4;
@@ -331,7 +331,7 @@ void spells(char p)
 					}
 				}
 			} else {
-				printAtXY(7,16, " SOIGNER QUI ? (0:Aucun) ");
+				printAtXY(7,16, " Cure which ? (0:None) ");
 				while(1) {
 					a = get();
 					if (a<'0' || a>'6')
@@ -372,7 +372,7 @@ void inspect(void)
 	char a, i, j;
 	char titre[32];
 	
-	printTitle(8,4, A_BGRED, "INSPECTER QUEL HEROS ? ", 23);
+	printTitle(8,4, A_BGRED, "INSPECT WHICH HERO ? ", 23);
 	while(1) {
 		a = get();
 		if (a<'1' || a>'6')
@@ -396,31 +396,31 @@ void inspect(void)
 	// affichage du titre
 	printTitle(a,2, A_BGRED, titre, j);
 	// affichage classe, niv, xp
-	printAtXY(5,  4, "Carr :");
+	printAtXY(5,  4, "Carr:");
 	printAtXY(11, 4, classe[characters[i].cp-1]);
-	printAtXY(22, 4, "Niv:");
+	printAtXY(22, 4, "Lvl:");
 	printAtXY(27, 4, itoa(characters[i].ni));
-	printAtXY(29, 4, "EXP:");
+	printAtXY(29, 4, "XP:");
 	printAtXY(33, 4, itoa(characters[i].xp));
 	
 	// affichage santé, pv
-	printAtXY(5,  6, "Sant{:");
+	printAtXY(5,  6, "Health:");
 	printAtXY(11, 6, etat[characters[i].ok-1]);
-	printAtXY(22, 6, "PV :");
+	printAtXY(22, 6, "HP:");
 	printAtXY(27, 6, itoa(characters[i].et));
 	printAtXY(30, 6, "/");
 	printAtXY(32, 6, itoa(characters[i].pv));
 	// affichage bourse
-	printAtXY(5,  8, "Bourse:");
+	printAtXY(5,  8, "Money:");
 	printAtXY(13, 8, itoa(characters[i].ri*10));
-	printAtXY(21, 8, "Cerfs d'Argent");
+	printAtXY(21, 8, "Silver Stags");
 	
 	// affichage de l'équipement porté
-	printAtXY(5,  10, "Arme D:");
+	printAtXY(5,  10, "R Wpn:");
 	if (characters[i].wr != 0)
 		printAtXY(13, 10, textesItems[characters[i].wr-1]);
 
-	printAtXY(5,  11, "Arme G:");
+	printAtXY(5,  11, "L Wpn:");
 	if (characters[i].wl != 0)
 		printAtXY(13, 11, textesItems[characters[i].wl-1]);
 	
@@ -428,14 +428,14 @@ void inspect(void)
 	if (characters[i].bt != 0)
 		printAtXY(13, 12, textesItems[characters[i].bt-1]);
 
-	printAtXY(5,  13, "Armure:");
+	printAtXY(5,  13, "Armor:");
 	if (characters[i].pt != 0)
 		printAtXY(13, 13, textesItems[characters[i].pt-1]);
-	printAtXY(29, 13, "CA:");
+	printAtXY(29, 13, "AC:");
 	printAtXY(33, 13, itoa(characters[i].ca));
 	
 	// affiche les caracs
-	printTitle(4,15, A_BGRED, "CC  CT  Fo  Ag  In  FM ", 23);
+	printTitle(4,15, A_BGRED, "Ml  Rg  St  Dx  Ig  MS ", 23);
 	printAtXY(7,16, itoa(characters[i].cc));
 	printAtXY(11,16, itoa(characters[i].ct));
 	printAtXY(15,16, itoa(characters[i].fo));
@@ -449,24 +449,24 @@ void inspect(void)
 			if (characters[i].sad[j]-1<nbTextes)
 			    printAtXY(8,18+j, textesItems[characters[i].sad[j]-1]);
 			else
-				printAtXY(8,18+j, "objet bugge");
+				printAtXY(8,18+j, "bogus item");
 		} else {
 			printAtXY(8,18+j, "..............");
 		}
 	}
 	// les morts et les paralysés ne peuvent pas lancer de sorts!
 	if (characters[i].cp>3 && characters[i].ok<3)
-		printTitle(10,25, A_BGRED, " <ESPACE> : SORTS ", 18);
+		printTitle(10,25, A_BGRED, " <SPACE> : SPELLS ", 18);
 	else
-		printTitle(10,25, A_BGRED, " <ESPACE> : RETOUR", 18);
-	printTitle(4,26, A_BGBLUE, " DONNER :  ", 11);
-	printTitle(16,26, A_BGRED, " A)rgent O)bjet ? ", 17);
+		printTitle(10,25, A_BGRED, " <SPACE> : BACK", 18);
+	printTitle(4,26, A_BGBLUE, " GIVE :  ", 11);
+	printTitle(16,26, A_BGRED, " M)oney I)tem ? ", 17);
 	while(1) {
 		a = get();
-		if (a=='A') {
+		if (a=='M') {
 			money(i);
 			break;
-		} else if (a=='O') {
+		} else if (a=='I') {
 			items(i);
 			break;
 		} else if (a==' ') {
@@ -484,9 +484,9 @@ void printTeamFull(void)
 	cls();
 	ink(eencre[ville-1]);
 	// affichage des titres
-	printTitle(8,2, A_BGRED, " * TYRANN 3 - EQUIPE * ", 23);
-	printTitle(2,4, A_BGRED, "PERSONNAGES MAISON    CARRIERE NIV ", 35);
-	printTitle(2,5, A_BGBLUE, " Argent      CC CT Fo Ag In FM PV  ", 35);
+	printTitle(8,2, A_BGRED, " * TYRANN 3 - TEAM * ", 23);
+	printTitle(2,4, A_BGRED, "CHARACTERS HOUSE  CARREER LVL ", 35);
+	printTitle(2,5, A_BGBLUE, " Money      Ml Rg St Dx Ig MS HP  ", 35);
 	// affichage persos
 	for(i=0;i<6;i++) {
 		switch(characters[i].cp) {
@@ -515,7 +515,7 @@ void printTeamFull(void)
 		printAtXY (27,7+3*i, classe[characters[i].cp-1]);
 		printAtXY (37,7+3*i, itoa(characters[i].ni));
 		printAtXY (6,7+3*i+1, itoa(characters[i].ri*10));
-		printAtXY (13,7+3*i+1, "ca");
+		printAtXY (13,7+3*i+1, "ss");
 		printAtXY (18,7+3*i+1, itoa(characters[i].cc));
 		printAtXY (21,7+3*i+1, itoa(characters[i].ct));
 		printAtXY (24,7+3*i+1, itoa(characters[i].fo));
@@ -524,8 +524,8 @@ void printTeamFull(void)
 		printAtXY (33,7+3*i+1, itoa(characters[i].fm));
 		printAtXY (36,7+3*i+1, itoa(characters[i].pv));
 	}
-	printTitle(2,25, A_BGBLUE, " Argent      CC CT Fo Ag In FM PV  ", 35);
-	printTitle(2,26, A_BGRED, "            < ESPACE >            ", 34);
+	printTitle(2,25, A_BGBLUE, " Money      Ml Rg St Dx Ig MS HP  ", 35);
+	printTitle(2,26, A_BGRED, "            < SPACE >            ", 34);
 	while(1) {
 		a = get();
 		if (a==' ') {
@@ -540,7 +540,7 @@ void chest(void)
 	char a,i,dff,ss;
 	char borne_sup, borne_inf;
 	cls();
-	printTitle(4,6, A_BGRED, "Voila un coffre, Qui l'ouvre ? ", 31);
+	printTitle(4,6, A_BGRED, "Here is a chest. Who opens it ? ", 31);
 	printTeam();
 	while(1) {
 		a = get();
@@ -552,7 +552,7 @@ void chest(void)
 	a = a - '1';
 	tentatives+=5;
 	if (characters[a].cp!=3) {
-		printAtXY(9,9, "C'est pas son truc !");
+		printAtXY(9,9, "He doesn't know how !");
 		zap();
 		wait(500);
 		return;
@@ -566,24 +566,23 @@ void chest(void)
 	ss = rand()%100+1;
 	if(ss>characters[a].ag+dff+tentatives) {
 		printAtXY(11,12, itoa(ss));
-		printAtXY(14,12, "Et non ! t1:");
-		printAtXY(27,12, itoa(tentatives));
+		printAtXY(14,12, " Failure!");
 		zap();
 		wait(500);
 		return;
 	}
-	printAtXY(11,11, "Ouvert ! Bravo.");
+	printAtXY(11,11, "Open ! Well done.");
 	ping();
-	printAtXY(6,12, "Il trouve ");
+	printAtXY(6,12, "He finds ");
 	if(ca==21) {
 		cles[ville-1][0]=1;
-		printAtXY(20,12, "Une clef en fer"); // clé 1
+		printAtXY(20,12, "An iron key"); // clé 1
 		wait(500);
 		ca=0;
 		return;
 	} else if(ca==26) {
 		cles[ville-1][3]=1;
-		printAtXY(20,12, "Une clef en or"); // clé 4 (prison)
+		printAtXY(20,12, "A golden key"); // clé 4 (prison)
 		wait(500);
 		ca=0;
 		return;
@@ -599,21 +598,21 @@ void chest(void)
 		// 21800 RETURN
 		if(ville<2 || ville >7) return; // bug
 		if(ingredients[ville-2]) {
-			printAtXY(20,12, "Rien !");
+			printAtXY(20,12, "Nothing!");
 			wait(150);
 			return;
 		}
 		np++;
 		ingredients[ville-2]=1;
 		printAtXY(20,12, nomIngredients[ville-2]);
-		printAtXY(6,13, "Nb d'Ingredients Potion :");
+		printAtXY(6,13, "Potion ingredients number :");
 		printAtXY(20,13, itoa(np));
 		if(np==6) {
-			printAtXY(6,15, "Direction le Labo pour la potion :");
+			printAtXY(6,15, "Let's go to the laboratory");
 		} else {
-			printAtXY(6,15, "Encore ");
+			printAtXY(6,15, "Still ");
 			printAtXY(13,15, itoa(6-np));
-			printAtXY(17,15, "a trouver");	
+			printAtXY(17,15, "to find.");	
 		}			
 		ca=0;
 		wait(500);
@@ -626,12 +625,12 @@ void chest(void)
 		// 21950 RETURN
 		int prime = rand()%5000 + 3000;
 		characters[a].ri += prime/10; // attention on stocke les ca / 10
-		printAtXY(20,12, "un TRESOR de");
+		printAtXY(20,12, "a Treasure of");
 		printAtXY(33,13, itoa(prime));
-		printAtXY(38,13, "ca");
+		printAtXY(38,13, "ss");
 		tl++; // on peut aller a la ville suivante !
-		printAtXY(4,15, "Vous trouvez le chemin vers");
-		printAtXY(4,16, "     une nouvelle ville !");
+		printAtXY(4,15, "You find the directions for");
+		printAtXY(4,16, "     a new village !");
 		ca=0;
 		wait(500);
 		return;
@@ -644,8 +643,8 @@ void chest(void)
 	
 	if(characters[a].sad[5]>0) {
 		zap();
-		printAtXY(19,12, "Un objet Mais...");
-		printAtXY(6,14, "Son sac a dos est plein ! Dommage.");
+		printAtXY(19,12, "An item but...");
+		printAtXY(6,14, "His backpack is full ! Too bad.");
 		wait(500);
 		return;
 	}
@@ -676,7 +675,7 @@ void chest(void)
 				if (characters[j].sad[i]==0) {
 					// on a trouvé de la place
 					characters[j].sad[i]=ss;
-					printAtXY(11,14, "Il donne l'objet a ");
+					printAtXY(11,14, "He gives the item to ");
 					printAtXY(15,15, characters[j].nom);
 					wait(500);
 					// on positionne les booléens
@@ -727,11 +726,11 @@ void sleep(void)
 	char p,i,max;
 	
 	if(ville>6) {
-		printAtXY(9,10, "Trop dangereux !");
+		printAtXY(9,10, "Too dangerous !");
 		wait(250);
 	} else {
 		cls();
-		printAtXY(11,3, "Une petite sieste ");
+		printAtXY(11,3, "A little nap. ");
 	
 		for(p=0;p<6;p++) {
 			if(characters[p].et>0 && characters[p].et<5)
@@ -742,7 +741,7 @@ void sleep(void)
 					characters[p].sp[i]=rand()%2+3;
 			}
 		}	
-		printAtXY(8,5, "Vous r{cup{rez vos sorts ");
+		printAtXY(8,5, "You recover your spells ");
 		wait(150);
 	}
 }	
@@ -756,13 +755,13 @@ void camping(void)
 		ptr = (char*)0x26a; *ptr = *ptr & 254; // Vire le curseur 
 		ink(eencre[ville-1]);
 		printFrame(15);
-		printTitle(8,2, A_BGRED, "<  ++ CAMPEMENT ++  >", 21);
-		printAtXY(9,6, "1. Inspecter un heros");
-		printAtXY(9,8, "2. Visualiser l'equipe");
+		printTitle(8,2, A_BGRED, "<  ++   CAMP   ++  >", 21);
+		printAtXY(9,6, "1. Inspect a hero");
+		printAtXY(9,8, "2. Team overview");
 		if (ca>20 && ca<29)
-			printAtXY(9,10, "3. Ouvrir un coffre");
-		printAtXY(9,12,"4. Se reposer");
-		printAtXY(13,16,"5. Lever le camp");
+			printAtXY(9,10, "3. Open the chest");
+		printAtXY(9,12,"4. Rest");
+		printAtXY(13,16,"5. Leave camp");
 		// affichage équipe
 		printTeam();
 		a = get();
@@ -782,7 +781,7 @@ void camping(void)
 				break;
 			case '5':
 				cls();
-				printAtXY(8,10, "Bon voyage !");
+				printAtXY(8,10, "Fair travels !");
 				wait(150);
 				return;
 				break;

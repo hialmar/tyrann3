@@ -25,18 +25,18 @@ char g[3]; // cases à gauche
 #define A_FWCYAN	 6
 #define A_FWWHITE	 7
 
-char *classe[] = { "Chevalier","Mercenaire","Ranger","Sorcier","Mestre","Septon" };
-char *etat[] = { "OK", "-Empoi- ", "-Paral- ", ">MORT< " };
-char *message[] = { "Ouille!","Le mur n'a rien senti","Tu as bu ?" };
-char *portes[] = {"King Robert","Queen Cersei","Prison","Conseil",
-	"Prince Oberyn","Laboratoire","Prison","Cellier",
-	"Lord Stannis","Melisandre","Prison","Vivarium",
-	"Sir Loras","Lady Margaery","Prison","Coffres",
-	"Asha Greyjoy","Theon Greyjoy","Prison","Cellier",
+char *classe[] = { "Knight","Mercenary","Ranger","Wizard","Maester","Septon" };
+char *etat[] = { "OK", "-Poison- ", "-Paral- ", ">DEAD< " };
+char *message[] = { "Ouch!","Wall seems in good condition","Are you drunk ?" };
+char *portes[] = {"King Robert","Queen Cersei","Jail","Council",
+	"Prince Oberyn","Laboratory","Jail","Cellar",
+	"Lord Stannis","Melisandre","Jail","Vivarium",
+	"Sir Loras","Lady Margaery","Jail","Coffers",
+	"Asha Greyjoy","Theon Greyjoy","Jail","Cellar",
 	"Petyr","Lady Sansa","Sky Cell","Moon Door",
-	"Lord Tyrion","Lord Tywin","Prison","Chapelle",
-	"Lord Brynden","Porcherie","Prison","Cuisines",
-	"Lord Starck","Master Luwin","Ranger","CastleBlack","- Sud -","- Nord -"};
+	"Lord Tyrion","Lord Tywin","Jail","Chapel",
+	"Lord Brynden","Porcherie","Jail","Kitchens",
+	"Lord Starck","Maester Luwin","Ranger","CastleBlack","-South-","- North -"};
 
 char *maisons[] = { "MARTELL","BARATHEON","TYRELL","GREYJOY","ARRYN","LANNISTER","TULLY","STARK"};
 
@@ -168,7 +168,7 @@ void prep(void)
 			}
 			break;
 		default:
-			printf("erreur prep %d\n", s);
+			printf("error prep %d\n", s);
 	}
 }
 
@@ -877,9 +877,9 @@ void manageCell(void)
 		//	puts("\n");
 		//}
 	} else if (ca==99) {
-		printf("        Retour au village (O/N)?\n");
+		printf("        Back to village (Y/N)?\n");
         a = get();
-        if (a == 'o' || a == 'O') { 
+        if (a == 'y' || a == 'Y') { 
         	text();
         	io_needed = 1;
         	// re-init de la position et orientation pour retour laby
@@ -902,7 +902,7 @@ void manageCell(void)
 			//a = get();
 			//if (a == 'c' || a == 'C') {
 				DiscLoad("STARK.BIN");
-				puts("    < ESPACE >");
+				puts("    < SPACE >");
 				a = get();
 				if (a == 's' || a == 'S') return; // skip
 				text();
@@ -917,7 +917,7 @@ void manageCell(void)
 		// si le coffre n'a pas été déjà ouvert
 		unsigned char nb = ca - 21;
 		if(!TestBit(combats_coffres[ville-1], nb)) {
-			printf("      Vous trouvez un coffre !", ca);
+			printf("      You find a chest !", ca);
 			wait(300);
 			//printf("Coffre %d non fini!\n", nb);
 			//printf("debug : C pour camp, autre evite.\n");
@@ -943,11 +943,11 @@ void manageCell(void)
 		3150 RETURN
 		*/
 		if(pm==0) { // potion
-			printf("      ET LA POTION ?\n");
+			printf("    You miss the potion ?\n");
 			zap();
 			wait(400);
 		} else if(TestBit(&dedans, 7)) { // wall
-			printf("      VERS LE NORD DU MUR\n");
+			printf("    You go north of the wall\n");
 			wait(250);
 			text();
 			io_needed = 0;
@@ -955,7 +955,7 @@ void manageCell(void)
 			restorePageZero();
 			SwitchToCommand("DIALOG");
 		} else {
-			printf("     PORTE DU NORD CLOSE\n");
+			printf("   North door is closed!\n");
 			wait(400);
 		}
 	} else {
@@ -1001,7 +1001,7 @@ void forward(void)
 		}
 	} else if(f[0]>1 && f[0]<7) {
 		shoot();
-		printf("Prenez la porte, mais pas comme ca !");
+		printf("The door is sturdy!");
 		wait(360);
 		cls();
 	} else {
@@ -1026,7 +1026,7 @@ void forward(void)
 					x--;
 				break;
 			default:
-				printf("erreur forward\n");
+				printf("error forward\n");
 		}
 	}
 	// 330 CASE=C(X,Y)
@@ -1091,7 +1091,7 @@ void main()
         // SetBit(combats_coffres[ville-1], 0);
         #endif
         
-        printf("Taper sur une touche pour continuer\n");
+        printf("Hit a key to continue\n");
         get();
 		
 		seed = (unsigned int *) 630; // timer
@@ -1157,7 +1157,7 @@ void main()
 							ping();
 							// on avance deux fois
 							prep();
-							printf("On passe la porte\n");
+							printf("We go through the door\n");
 							wait(180);
 							drawLaby();
 							forward();
@@ -1165,7 +1165,7 @@ void main()
 							////// MODIF Maximus *******
 							if(cles[ville-1][f[0]-3]==0) {
 								zap();
-								printf("Ou est la cl{ ?\n");
+								printf("Where is the key ?\n");
 							} else {
 								#ifdef debug
 								printf("Porte %d cle(%d,%d) %d  ", 
@@ -1178,7 +1178,7 @@ void main()
 								ping();
 								// on avance deux fois
 								prep();
-								printf("On passe la porte\n");
+								printf("We go through the door\n");
 								wait(180);
 								drawLaby();
 								forward();
@@ -1242,7 +1242,7 @@ void main()
 					break;
 				//#endif
 				default:
-					puts("I:avance, J:droite, L:gauche\nESPACE: ouvrir porte");
+					puts("I:forward, J:right, L:left\nSPACE: opens door");
 					wait(200);
 			}
 			// 450 GOTO 300

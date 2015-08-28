@@ -34,14 +34,14 @@ extern char eencre[];
 unsigned char coteTexte = 0; // 0 : droite ; 1 : gauche 
 
 char *persos[] = {"King Robert","Queen Cersei",
-	"Prince Oberyn","La Sorci}re",
+	"Prince Oberyn","The Sorceress",
 	"Lord Stannis","Melisandre",
 	"Sir Loras","Lady Margaery",
 	"Asha Greyjoy","Theon Greyjoy",
 	"Petyr","Lady Sansa",
 	"Lord Tyrion","Lord Tywin",
 	"Lord Brynden","Jaime Lannister",
-	"Lord Starck","Master Luwin"};
+	"Lord Starck","Maester Luwin"};
 
 void loadTextesPersos()
 {
@@ -145,9 +145,9 @@ void dialogue(char d)
 			y+=10;				
 			if (y>160) {
 				if(k==0) {
-					puts("Appuyez sur une touche pour continuer");
+					puts("Hit a key to continue");
 					c=get();
-					if(c=='f'||c=='F') return;
+					//if(c=='f'||c=='F') return;
 				}
 				k=(k+1)%13;
 				// scroll text
@@ -181,7 +181,7 @@ void dialogue(char d)
 ô - ^
 
 		*/
-		puts("Dois-je r{p{ter (O/N)?");
+		puts("Shall I repeat (Y/N)?");
 		c = get();
 		// scrolling d'effacement
 		x=20;
@@ -196,7 +196,7 @@ void dialogue(char d)
 			q -= 40;
 			wait(1);
 		}
-		if(c=='o'||c=='O') {
+		if(c=='y'||c=='Y') {
 			while(p<q) {
 				memset(p+deltaCote+2,64,18);
 				memset(q+deltaCote+2,64,18);
@@ -205,8 +205,8 @@ void dialogue(char d)
 			}
 		}
 
-	} while(c=='o'||c=='O');	
-	puts("Appuyez sur une touche pour continuer");
+	} while(c=='y'||c=='Y');	
+	puts("Hit a key to continue");
 	get();
 
 }
@@ -292,7 +292,7 @@ void main()
 		//loadRoutines();
 		if (ca == 7 || ca == 8) {
 			loadImage(imagesPersos[ville-1][ca-7]);
-			printf("Je suis %s\n", persos[(ville-1)*2+(ca-7)]);
+			printf("I am %s\n", persos[(ville-1)*2+(ca-7)]);
 			// donne la clé suivante
 			if (cles[ville-1][ca-6]!=1) {
 				dialogue(ca-7);
@@ -326,37 +326,37 @@ void main()
 					perso = rand()%6;
 					prime = rand()%5000 + 5000;
 					characters[perso].ri += prime/10; // attention on stocke les ca / 10
-					printf("Jaime donne %d ca a %s.", prime, characters[perso].nom);
+					printf("Jaime gives %d ss to %s.", prime, characters[perso].nom);
 					wait(500);
 				}
 			} else {
 				wait(200);
-				puts("Dois-je r{p{ter (O/N)?");
+				puts("Shall I repeat (Y/N)?");
 				c = get();
-				if(c=='o'||c=='O') {
+				if(c=='y'||c=='Y') {
 					dialogue(ca-7);
 				}
 			}
 		} else if (ville == 9 && ca == 51) {
 			// Jon
 			loadImage(imagesPersos[9][0]);
-			printf("Je suis Jon Snow\n");
+			printf("I am Jon Snow\n");
 			// test bit wall
 			if(!TestBit(&dedans, 7)) {
 				dialogue(0);
 				SetBit(&dedans, 7);
 			} else {
 				wait(200);
-				puts("Dois-je r{p{ter (O/N)?");
+				puts("Shall I repeat (O/N)?");
 				c = get();
-				if(c=='o'||c=='O') {
+				if(c=='y'||c=='Y') {
 					dialogue(0);
 				}
 			}
 		} else if (ville == 9 && ca == 52) {
 			// Jon
 			loadImage(imagesPersos[9][0]);
-			printf("Je suis Jon Snow\n");
+			printf("I am Jon Snow\n");
 			// test bit wall
 			if(TestBit(&dedans, 7)) {
 				dialogue(1);
@@ -365,7 +365,7 @@ void main()
 				restorePageZero();
 				SwitchToCommand("GENERIC");
 			} else {
-				printf("Je n'ai rien a vous dire.\n");
+				printf("I have nothing to say.\n");
 				wait(500);
 			}
 		}

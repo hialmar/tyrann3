@@ -110,7 +110,7 @@ char *loadTexts(char *ptr, char *tab[])
 		//printf("Longueur texte %d : %d\n", t, longueur);
 		tab[t] = ptTextes;
 		if (ptTextes+longueur+1-textes > tmax) {
-			printf("Le tableau est trop petit, il faut au moins %d caracteres\n",
+			printf("Array too small, it needs %d characters\n",
 				ptTextes+longueur+1-textes);
 			//restorePageZero();
 			exit(1);
