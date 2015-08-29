@@ -485,7 +485,7 @@ void printTeamFull(void)
 	ink(eencre[ville-1]);
 	// affichage des titres
 	printTitle(8,2, A_BGRED, " * TYRANN 3 - TEAM * ", 23);
-	printTitle(2,4, A_BGRED, "CHARACTERS HOUSE  CARREER LVL ", 35);
+	printTitle(2,4, A_BGRED, "CHARACTERS  HOUSES CARREER LVL ", 35);
 	printTitle(2,5, A_BGBLUE, " Money      Ml Rg St Dx Ig MS HP  ", 35);
 	// affichage persos
 	for(i=0;i<6;i++) {

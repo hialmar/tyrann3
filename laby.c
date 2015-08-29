@@ -30,7 +30,7 @@ char *etat[] = { "OK", "-Poison- ", "-Paral- ", ">DEAD< " };
 char *message[] = { "Ouch!","Wall seems in good condition","Are you drunk ?" };
 char *portes[] = {"King Robert","Queen Cersei","Jail","Council",
 	"Prince Oberyn","Laboratory","Jail","Cellar",
-	"Lord Stannis","Melisandre","Jail","Vivarium",
+	"Lord Stannis","Melisandre","Jail","Solar",
 	"Sir Loras","Lady Margaery","Jail","Coffers",
 	"Asha Greyjoy","Theon Greyjoy","Jail","Cellar",
 	"Petyr","Lady Sansa","Sky Cell","Moon Door",
