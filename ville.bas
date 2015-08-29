@@ -386,7 +386,7 @@
 9400 IFBT(P)>0THENM$=IT$(BT(P))ELSEM$="..........."
 9410 PRINT@4,L;I;M$:L=L+2
 9420 PRINT@2,L;"*************************************"
-9430 PRINT@6,L;CHR$(135);CHR$(145);"V)endre ";CHR$(128+ENC)
+9430 PRINT@6,L;CHR$(135);CHR$(145);"V)endre ";CHR$(128+ENC);CHR$(144)
 9450 RETURN
 
 9500 CLS:PRINT:INK(ENC):PRINTCHR$(17);
