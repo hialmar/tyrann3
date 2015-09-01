@@ -596,15 +596,15 @@ void chest(void)
 		// 21740 S$="Encore"+STR$(6-NP)+" a trouver":PRINT@5,14;S$
 		// 21790 L=16:GOSUB 30000
 		// 21800 RETURN
-		if(ville<2 || ville >7) return; // bug
-		if(ingredients[ville-2]) {
+		if(ville<3 || ville >8) return; // bug
+		if(ingredients[ville-3]) {
 			printAtXY(20,12, "Nothing!");
 			wait(150);
 			return;
 		}
 		np++;
-		ingredients[ville-2]=1;
-		printAtXY(20,12, nomIngredients[ville-2]);
+		ingredients[ville-3]=1;
+		printAtXY(20,12, nomIngredients[ville-3]);
 		printAtXY(6,13, "Potion ingredients number :");
 		printAtXY(20,13, itoa(np));
 		if(np==6) {

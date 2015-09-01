@@ -35,7 +35,7 @@ char *portes[] = {"King Robert","Queen Cersei","Jail","Council",
 	"Asha Greyjoy","Theon Greyjoy","Jail","Cellar",
 	"Petyr","Lady Sansa","Sky Cell","Moon Door",
 	"Lord Tyrion","Lord Tywin","Jail","Chapel",
-	"Lord Brynden","Porcherie","Jail","Kitchens",
+	"Lord Brynden","Pigpen","Jail","Kitchens",
 	"Lord Starck","Maester Luwin","Ranger","CastleBlack","-South-","- North -"};
 
 char *maisons[] = { "MARTELL","BARATHEON","TYRELL","GREYJOY","ARRYN","LANNISTER","TULLY","STARK"};
