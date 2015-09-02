@@ -20,37 +20,37 @@
 100 PING:ZAP:END
 
 1000 REM TEXTES DE Oberyn et Sorciere,...
-1001 DATA "Bienvenue a SUNSPEAR"
-1002 DATA "Vous osez  venir ici"
-1003 DATA "au nom de Tywin ? !!"
-1004 DATA "hum  j'hesite  entre"
-1005 DATA "vous empaler ou vous"
-1006 DATA "bruler vif !! ......"
-1007 DATA "Mais comme vous etes"
-1008 DATA "du royaume de Tyrann"
-1009 DATA "Je vous epargnerai.."
-1010 DATA "Oui une sorciere est"
-1011 DATA "sous ma protection.."
-1012 DATA "Elle  est  bien  ici"
-1013 DATA "Voila la clef de son"
-1014 DATA "laboratoire ! Allez "
-1015 DATA "la supplier... <SP>"
+1001 DATA "Welcome in  SUNSPEAR "
+1002 DATA "How dare you come "
+1003 DATA "in the name of Tywin?"
+1004 DATA "I  hesitate  between"
+1005 DATA "impaling or burning "
+1006 DATA "you alive  !! .. But"
+1007 DATA "you're from Tyrann's"
+1008 DATA "realm, so you don't "
+1009 DATA "know why I hate  him"
+1010 DATA "Yes a great northern"
+1011 DATA "witch is my guest, I"
+1012 DATA "give you the key of "
+1013 DATA "her laboratory. Go &"
+1014 DATA "implore her help...."
+1015 DATA "     <.SPACE.>      "
 
-1101 DATA "Ha ha ha on a besoin"
-1102 DATA "de moi ?  Tyr quoi ?"
-1103 DATA "connais pas ! Soit !"
-1104 DATA "Westeros a besoin de"
-1105 DATA "ma potion ? je serai"
-1106 DATA "enfin reconnue, donc"
-1107 DATA "Les 6 ingredients:  "
-1108 DATA " 1 - sangsue royale "'Storm's end
-1109 DATA " 2 - fleur de Lys   "'Highgarden
-1110 DATA " 3 - encre de poulpe"'Pike
-1111 DATA " 4 - rose du Val    "'Val d'Arryn
-1112 DATA " 5 - huile du Roc   "'Castraly roc
-1113 DATA " 6 - foie de truite "'Riverrun
-1114 DATA " On se retrouvera au"
-1115 DATA "Laboratoire du Nord."
+1101 DATA "Ha ha Queens & Kings"
+1102 DATA "need me ?   Tyrann ?"
+1103 DATA "never heard of! So !"
+1104 DATA "Westeros  needs  my "
+1105 DATA "potion? At last I'll"
+1106 DATA "be recognized ! find"
+1107 DATA "those 6 ingredients:"
+1108 DATA " 1- royal leech    "'Storm's end
+1109 DATA " 2- lily flower    "'Highgarden
+1110 DATA " 3- kraken ink     "'Pike
+1111 DATA " 4- rose of the Vale"'Val d'Arryn
+1112 DATA " 5- oil of the Rock "'Castraly roc
+1113 DATA " 6- trout liver     "'Riverrun
+1114 DATA "With this, join me at"
+1115 DATA "Northern laboratory  "
 
 
 

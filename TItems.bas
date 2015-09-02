@@ -20,10 +20,10 @@
 95 SAVEO "TITEMS.BIN",A#A000,EO1
 100 PRINT"OBJETS OK":PING:ZAP:END
 
-200 DATA Armure valyrienne,Armure en acier,Armure de fer,Cotte de mailles,Cuirasse,Armure de cuir,Robe de bure:REM 1-7 
-220 DATA Epee valyrienne,Hache de Winterfell,Morgenstern,Fleau d'armes,Marteau,Epee a 2 mains,Epee,Arbalete,Arc court,Fronde,Filet,Poignard:REM 8-19
-250 DATA Onguent,Bois divin,Potion Ebene,Essence vitale,Potion Divine,Potion Zoman,Potion glaciale:REM 20-26
-270 DATA Outre,Miche de pain,Cervoise,Poisson sec,Cuisse de sanglier:REM 27-31
-280 DATA Pot Gregeois, Fut Gregeois, Pied de biche, Boussole, Selle de Dragon:REM 32-36
-290 DATA DireWolf, Panthere, Molosse, Aigle, Faucon, Dogue, Chat sauvage:REM 37-43
-300 DATA Couronne, Solitaire, Perles d'Eyrie, Coeur de diamants, Bourse:REM 44-48
+200 DATA Valyrian Armor, Steel Armor, Iron Armor, Chainmail, Cuirass, leather armor, Linen Tunic
+210 DATA Valyrian Sword, Winterfell's Axe, Morgenstern, Morning Star, Hammer, Longsword, Sword, Crossbow, Bow, Sling, Net, Dagger
+220 DATA Unguent, Divine wood, Vital juice, Ebony Potion, Divine Potion, Zoman Potion, Freezing Potion
+230 DATA Wineskin, Loaf of bread, Dornish ale, Dry fish, Boar leg
+240 DATA Wildfire pot, Wildfire barrel, Crowbar, Compass, Dragoon saddle
+250 DATA Direwolf, Panther, Mastiff, Eagle, Hawk, Wild dog, Wild Cat
+260 DATA Crown, Jewel, Eyrie's Pearls, Heart of Diamonds, pouch of coins

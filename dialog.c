@@ -8,6 +8,7 @@ char textes[TMAX];
 int tmax = TMAX;
 
 extern char * ptTextes;
+extern char nbTextes;
 
 char * textesPersos[2][15];
 char * imagesPersos[10][2];
@@ -133,7 +134,7 @@ void dialogue(char d)
 		x=xinit;
 		y=30;
 		k=0;
-		for(t=0;t<15;t++) {
+		for(t=0;t<nbTextes;t++) {
 			lg = strlen(textesPersos[d][t]);
 			for(i=0;i<lg;i++) {
 				curset(x,y,3);
@@ -283,8 +284,8 @@ void main()
 		backupPageZero();
 		io_needed=0;
         loadCharacters();
-        loadTextesPersos();
         loadNomsImagesPersos();
+        loadTextesPersos();
         //DiscLoad("FONT.BIN");
         //printf("v: %d ca: %d, ca-7: %d\n", ville, ca, (ca-7));
 		//get();

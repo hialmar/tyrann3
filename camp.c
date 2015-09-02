@@ -396,7 +396,7 @@ void inspect(void)
 	// affichage du titre
 	printTitle(a,2, A_BGRED, titre, j);
 	// affichage classe, niv, xp
-	printAtXY(5,  4, "Carr:");
+	printAtXY(5,  4, "Car:");
 	printAtXY(11, 4, classe[characters[i].cp-1]);
 	printAtXY(22, 4, "Lvl:");
 	printAtXY(27, 4, itoa(characters[i].ni));
@@ -485,7 +485,7 @@ void printTeamFull(void)
 	ink(eencre[ville-1]);
 	// affichage des titres
 	printTitle(8,2, A_BGRED, " * TYRANN 3 - TEAM * ", 23);
-	printTitle(2,4, A_BGRED, "CHARACTERS  HOUSES CARREER LVL ", 35);
+	printTitle(2,4, A_BGRED, "CHARACTER   HOUSE  CAREER  LVL ", 35);
 	printTitle(2,5, A_BGBLUE, " Money      Ml Rg St Dx Ig MS HP  ", 35);
 	// affichage persos
 	for(i=0;i<6;i++) {

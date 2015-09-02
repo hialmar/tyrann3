@@ -4,8 +4,8 @@
 35 O1=#A000
 36 POKEO1,2
 40 FOR P=1TO2
-45  O1=O1+1:POKEO1,15
-50  FOR X=1TO15
+45  O1=O1+1:POKEO1,16
+50  FOR X=1TO16
 60   READ TP$(P,X):PRINT TP$(P,X)
 61   LG=LEN(TP$(P,X))
 62   O1=O1+1:POKEO1,LG
@@ -20,65 +20,36 @@
 100 PING:ZAP:END
 
 10000 REM TEXTS NED, LUWIN
-10001 DATA "BONJOUR NOBLE EQUIPE"
-10002 DATA "La garde de nuit si-"
-10003 DATA "gnale des anomalies:"
-10004 DATA " - un marcheur blanc"
-10005 DATA " - un direwolf, ... "
-10006 DATA "il faut 1 expedition"
-10007 DATA "au  dela  du  mur  !"
-10008 DATA "Merci a Tyrann de ce"
-10009 DATA "cadeau  a  Westeros "
-10010 DATA "le roi Robert serait"
-10011 DATA "il devenu sage ? Hum"
-10012 DATA "Il  faut  des  armes"
-10013 DATA ">>  Verre-Dragons <<"
-10014 DATA "Aussi  allez voir le"
-10015 DATA " * Mestre Luwin *"
+10001 DATA "Hello brave warriors"
+10002 DATA "of the Tyrann Queen."
+10003 DATA "The night watch re- "
+10004 DATA "ports strange things"
+10005 DATA "south of the Wall   "
+10006 DATA " - a white walker   "
+10007 DATA " - a direwolf, etc. "
+10008 DATA "We need to go beyond"
+10009 DATA " the Wall to spy.   "
+10010 DATA "Robert, a wise King!"
+10011 DATA "Incredible thing... "
+10012 DATA "You need dragonglass"
+10013 DATA "weapons. Go see     "
+10014 DATA "Maester Luwin. Jon  "
+10015 DATA "will join you later."
+10016 DATA "Go now."
 
-10101 DATA "   Salut mes enfants"
-10102 DATA "Le Roi  vous  envoie"
-10103 DATA "a la mort! vous avez"
-10104 DATA "une petite chance de"
-10105 DATA "vivre avec des armes"
-10106 DATA "magiques, les seules"
-10107 DATA "capables de tuer les"
-10108 DATA "monstres  qui  n'ont"
-10109 DATA "donc  pas   disparus"
-10110 DATA "J'ai vu la  sorciere"
-10111 DATA "elle doit etre  dans" 
-10112 DATA "le laboratoire  pour"
-10113 DATA "vous faire la potion"
-10114 DATA " grace a l'Athanor !"
-10115 DATA "le four d'Alchimiste"
-
-
-
-
-
-13000 DATA "Merci et Bravo pour cette Potion "
-13001 DATA "elle a le pouvoir de proteger de "
-13002 DATA "la transformation des morts en   "
-13003 DATA "marcheurs blancs. Ca peut sembler"
-13004 DATA "Inutile, mais en cas de combat   "
-13005 DATA "Ca empechera nos morts de se re- "
-13006 DATA "tourner contre nous. C est donc  "
-13007 DATA "vital pour la Garde de Nuit qui  "
-13008 DATA "est en premiere ligne. Je vous   "
-13009 DATA "donne les armes verre-dragon.    "
-13010 DATA "Trouvez la sorciere du Nord et   "
-13011 DATA "retournez voir Ned ... A bientot"
-
-11000 DATA " PAR LES 7 ! FELICITATIONS !     "
-11001 DATA " vous avez reussi cette potion   "
-11002 DATA "Mestre Luwin ne tarit pas d eloges"
-11003 DATA "Voila la clef du souterrain qui   "
-11004 DATA "Permettra de passer au Nord du mur"
-11005 DATA "sans attirer l'attention des sau-"
-11006 DATA "vageons et des marcheurs blancs"
-11007 DATA "L avenir des 7 royaumes dÈpend de "
-11008 DATA "votre expedition, soyez prudent   "
-11009 DATA "car les dangers que vous avez vecu"
-11010 DATA "ne sont que des broutilles !!     "
-11011 DATA "Bonne chance et Winter is coming "
-
+10101 DATA "   Hello my children"
+10102 DATA "The King sends you to"
+10103 DATA "your death your only"
+10104 DATA "chance to survive is"
+10105 DATA "those magical weapons"
+10106 DATA ", which can kill the "
+10107 DATA "abominations our an-"
+10108 DATA "cestors fought and  "
+10109 DATA "thought exterminated."
+10110 DATA "Alas it seems not ! "
+10111 DATA "I saw our witch, she " 
+10112 DATA "must be in the lab."
+10113 DATA "Go make the potion"
+10114 DATA "with your ingredients"
+10115 DATA "and an alchemist oven"
+10116 DATA "called the Athanor!"
