@@ -79,7 +79,7 @@ void printTeam(void)
 	char i,encre;
 	attribAtXY(0,20,A_FWWHITE);
 	attribAtXY(1,20,A_BGRED); // fond rouge
-	printAtXY(2,20,"CHARACTERS     CAREER     HP  ST  AC"); 
+	printAtXY(2,20,"CHARACTER      CAREER     HP  ST  AC"); 
 	for(i=0;i<6;i++) {
 		switch(characters[i].cp) {
 			case 1:
@@ -362,7 +362,7 @@ void spells(char p)
 			printAtXY(7,12, "                         ");
 			// affichage équipe
 			printTeam();
-			a='o';
+			a='y';
 		}
 	}
 }

@@ -52,7 +52,7 @@ void loadCharacters(void)
 	// POKE 48035,0:POKE#26A,PEEK(#26A)AND254
 	poke(48035,0);
 	poke(0x26a,peek(0x26a)&254);
-	puts("         Veuillez Patienter...\n");	
+	puts("         Please Wait...\n");	
 	// 48005 CLOAD"TEAM"
 	if (io_needed) {
 		//printf("Chargement de %s\n", teamfilename);
@@ -201,7 +201,7 @@ void saveCharacters(void)
 	char *ptr;
 	
 	// 49000 TEXT:CLS:PRINT @ 8,12;CHR$(145);CHR$(135);"++ PREPARE L EQUIPE ++ ";CHR$(144)
-	text(); cls(); printf("\n\n\n\n\n\n\n\n\n\n\n\n        ++ PREPARE L'EQUIPE ++ \n");
+	text(); cls(); printf("\n\n\n\n\n\n\n\n\n\n\n\n        ++ PREPARING TEAM ++ \n");
 	// 49010 O1=#A000
 	ptr = (char*)0xa001;
 	//printf("debut : (%x) ou %d\n", (unsigned int) ptr, (int) ptr);

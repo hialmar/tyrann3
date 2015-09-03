@@ -12,7 +12,7 @@
 50 PRINT:PRINT:PRINT
 60 PRINTSPC(12);CHR$(27);"A";CHR$(27)"JTYRANN 3";CHR$(4)
 70 PRINT:PRINT:PRINT
-80 PRINT "   "CHR$(27);"E";CHR$(96)" ONWARD TO WESTEROS":PRINT
+80 PRINT "      "CHR$(27);"E";CHR$(96)" ONWARD TO WESTEROS":PRINT
 90 A$=CHR$(126):B$=CHR$(255)
 100 LP$=B$:FORI=1TO34:LP$=LP$+B$:NEXTI
 110 L$=B$:FORI=1TO33:L$=L$+B$:NEXTI:L$=L$+B$
@@ -27,7 +27,7 @@
 200 PRINT B$;"Bless the seven! Will you survive";B$
 210 PRINT B$;SPC(33);B$
 220 PRINT B$;SPC(33);B$
-230 PRINT B$;"    to what comes from the North ";B$
+230 PRINT B$;"  to what comes from the North   ";B$
 240 PRINT B$;SPC(33);B$
 250 PRINT LP$
 255 WAIT300:PLOT 28,24," SPACE >"
@@ -49,11 +49,11 @@
 380 FOR I=1TO6:SAD(P,I)=0:NEXTI:REM ++ INITIALISE LE SAC A DOS
 400 CLS:PRINT:PRINTSPC(12);CHR$(4);CHR$(27)"JTYRANN 3";CHR$(4)
 410 PRINT
-420 PRINT:S$=" ******** CHARACTER CREATION ******* ":GOSUB 1900:PRINT
+420 PRINT:S$=" ******* CHARACTER CREATION ****** ":GOSUB 1900:PRINT
 422 IF P=1 THEN 430
 423 S$="Team: ":GOSUB 1950:PRINT:T=P-1
-424  FORI=1TO T:PRINT I;C$(CP(I));:S$=N$(I)
-426 PRINT @16,I+7;S$:IF MP(I)>1 THEN PRINT @27,I+7;M$(MP(I))
+424  FORI=1TO T:PRINT @1,I+8;I;C$(CP(I));:S$=N$(I)
+426 PRINT @16,I+8;S$:IF MP(I)>1 THEN PRINT @27,I+8;M$(MP(I))
 429 NEXT
 430 PRINT:S$="FIRSTNAME No"+STR$(P)+" (10 letters max)":GOSUB 1950
 435 INPUTN$(P)
@@ -79,8 +79,8 @@
 610 CLS:S$=" "+C$(CP(P))+" "+N$(P)+" "+M$+" ":GOSUB1950
 620 S$=" Rolling the DICE: <space> ":GOSUB1900
 625 PRINTCHR$(145)" Try:"T" ";CHR$(144):PRINT
-627 PRINT@2,4;"FORMULA ATTRIB:";:PRINT@24,4;"Bonus"
-628 PRINT@2,5;"Base 15    +    2D  +";:PRINT@24,5;"Career"
+627 PRINT@2,4;"Attribute Formula:";:PRINT@24,4;"Bonus"
+628 PRINT@2,5;"Base 15    +  2D10  +";:PRINT@24,5;"Career"
 630 S$="Ml:"+CAR$(1)+">":  GOSUB1900:GOSUB19000:GOSUB 20010:CC(P)=D1+D2+15+BC(CP(P),1)
 635 S$=STR$(BC(CP(P),1))+" >":PRINT@26, 7;S$;:S$=STR$(CC(P))+"  ":GOSUB1950:PRINT
 640 S$="Rg:"+CAR$(2)+" > ":GOSUB1900:GOSUB19000:GOSUB 20010:CT(P)=D1+D2+15+BC(CP(P),2)
@@ -144,12 +144,12 @@
 1550 PRINT@4,7;CHR$(148)S$CHR$(144)
 1560 S$=STR$(CC(P))+" "+STR$(CT(P))+" "+STR$(FO(P))+" "+STR$(AG(P))+" "+STR$(IN(P))+" "+STR$(FM(P))+"     "+STR$(CUMUL)
 1570 PRINT@5,9;S$:PRINT:PRINT
-1580 PRINT@4,12;CHR$(148)" Money: "CHR$(144);RI(P);" Silver Stags(SS)"
+1580 PRINT@4,12;CHR$(148)" Money: "CHR$(144);RI(P);" Silver Stags (SS)"
 1590 PRINT@4,14;CHR$(148)" HP (Hit Points): "CHR$(144);PV(P)
 1600 IF T=3 THEN 1640
 1610 IF T=1 THEN S$="Two Tries left" ELSE S$="!! Last Try !!"
 1620 PRINT@10,18; S$:PRINT
-1630 PRINT@6,20; "Do you want to keep this character ?...Y/N":GOTO1650
+1630 PRINT@6,20; "Keep this character ?...Y/N":GOTO1650
 1640 PRINT@10,18; "It was the last try"
 1645 PRINT@15,20;CHR$(148)" < Y)es > "CHR$(144)
 1650 GETOK$
@@ -168,8 +168,9 @@
 1822 PRINT "will cast some dice (2D10) to define  "
 1824 PRINT "the 6 attributes and the Hit points   ":PRINT
 1830 PRINT "Make sure to balance your team well.  "
-1832 PRINT "Each choice has strengths and draw-   ":PRINT
-1834 PRINT "backs. You have 3 tries per character.":PRINT
+1832 PRINT "Each choice has strengths and   "
+1834 PRINT "drawbacks.":PRINT
+1835 PRINT "You have 3 tries per character.":PRINT
 1840 PRINT @6,19;"We wish you a good team ! ;-)":PRINT@15,23;CHR$(148)"< Space > "CHR$(144)
 1850 GETA$:IFA$<>" " THEN 1850
 1860 RETURN
@@ -244,8 +245,8 @@
 
 5000 REM AFFICHE EQUIPE
 5010 CLS:PRINT@8,1;CHR$(145)" * TYRANN 3 - TEAM *  "CHR$(144)
-5012 L=3:PRINT@3,L;CHR$(145)"CHARACTER  HOUSE    CAREER   "CHR$(144)
-5015 PRINT@3,L+1;CHR$(148)" Money      Ml Rg St Dx Ig MS HP "CHR$(144):L=5
+5012 L=3:PRINT@3,L;CHR$(145)" CHARACTER   HOUSE     CAREER   "CHR$(144)
+5015 PRINT@3,L+1;CHR$(148)" Money       Ml Rg St Dx Ig MS HP "CHR$(144):L=5
 5020 FOR I=1TO6
 5030  IF CP(I)=1 THEN ENC=131
 5040  IF CP(I)=2 THEN ENC=135
@@ -257,7 +258,7 @@
 5100 PRINT @ 4,L+1;STR$(RI(I));" ss"
 5130 S$=STR$(CC(I))+STR$(CT(I))+STR$(FO(I))+STR$(AG(I))+STR$(IN(I))+STR$(FM(I))+STR$(PV(I))
 5140 PRINT@16,L+1;S$:L=L+3
-5200 NEXT I:PRINT@3,L-1;CHR$(148)" Money      Ml Rg St Dx Ig MS HP "CHR$(144)
+5200 NEXT I:PRINT@3,L-1;CHR$(148)" Money       Ml Rg St Dx Ig MS HP "CHR$(144)
 5210 ENC=4
 5250 RETURN
 
