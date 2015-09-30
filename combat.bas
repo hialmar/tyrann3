@@ -185,7 +185,7 @@
 8290 RETURN
 
 8300 REM AFFICHE EQUIPE
-8310 FR = FRE(""):L=19:PRINT@1,L;CHR$(145)"PERSONNAGES �  CASTE �   �PV �ET �CA"
+8310 FR = FRE(""):L=19:PRINT@1,L;CHR$(145)"PERSONNAGES    CASTE      PV  ET  CA"
 8320 FOR I=1TO6:L=L+1
 8330  IF CP(I)=1 THEN ENC=131
 8335  IF CP(I)=2 THEN ENC=135
@@ -279,7 +279,7 @@
 9510 PING:PRINT @2,19;CHR$(148)"  Sur Qui ?  "CHR$(145)
 9520 GOSUB 500
 9530 TG(P)=VAL(A$)
-9540 PRINT@1,19;CHR$(145)"PERSONNAGES �  CASTE �   �PV �ET �CA"
+9540 PRINT@1,19;CHR$(145)"PERSONNAGES    CASTE      PV  ET  CA"
 9550 RETURN
 
 9600 REM CIBLER ENNEMI
@@ -585,7 +585,7 @@
 22520 L=14:GOSUB300
 22550 RETURN
 
-23000 REM Potion divine: Mise en majuscule du pr�nom
+23000 REM Potion divine: Mise en majuscule du prenom
 23020 L=10:S$=N$(AO(P))+" utilise Potion divine ":GOSUB 300
 23030 L=13:S$=N$(TG((AO(P))))+" a une force de colosse":GOSUB 300
 23033 FC(TG(AO(P)))=50+FNA(VIL*6):GOSUB24000
@@ -599,7 +599,7 @@
 23080 NEXT 
 23100 RETURN
 
-23200 REM Mise en minuscule des pr�noms
+23200 REM Mise en minuscule des prenoms
 23205 FORP=1TO6
 23210 S$=N$(P):N$(P)=LEFT$(S$,1)
 23220  FORI=2TOLEN(S$)
@@ -620,14 +620,14 @@
 23420 BC(TG(AO(P)))=50:ET(TG(AO(P)))=PV(TG(AO(P)))
 23450 RETURN
 
-24000 I=0'recherche indice du h�ros dop� par potion ebene
+24000 I=0'recherche indice du heros dope par potion ebene
 24010 REPEAT
 24020  I=I+1
 24030 UNTIL AO(I)=TG(AO(P)) AND ESP(I)=1 ' OR I=6+NE
 24040 VE(I)=90
 24050 RETURN
 
-24100 FORJ=1TONE'monstres congel� = perte de vitesse
+24100 FORJ=1TONE'monstres congele = perte de vitesse
 24110 IF ESP(J)=1THEN 24130
 24120 VE(J)=VE(J)-5
 24130 NEXTJ
